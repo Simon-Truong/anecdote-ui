@@ -1,22 +1,25 @@
 <template>
-  <v-app>
+  <v-app class="main">
     <AppBar />
 
     <v-content>
       <router-view />
     </v-content>
+
+    <Footer />
   </v-app>
 </template>
 
 <script>
-
 import AppBar from './components/Appbar';
+import Footer from './components/Footer';
 
 export default {
   name: 'App',
 
   components: {
-    AppBar
+    AppBar,
+    Footer
   },
 
   data: () => ({
@@ -24,3 +27,10 @@ export default {
   })
 };
 </script>
+
+<style scoped lang="scss">
+.main {
+  font-family: 'Inconsolata', 'Roboto', monospace;
+  background-color: #f5f5f5;
+}
+</style>
