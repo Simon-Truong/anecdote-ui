@@ -29,8 +29,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/_variables.scss';
+
 .main {
   font-family: 'Inconsolata', 'Roboto', monospace;
-  background-color: #f5f5f5;
+  background-color: $background-color;
 }
 </style>

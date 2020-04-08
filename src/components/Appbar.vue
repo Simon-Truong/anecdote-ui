@@ -15,8 +15,8 @@
 
           <v-col cols="3">
             <div class="text-right">
-              <router-link to="/about" class="custom-anchor mr-2">About</router-link>
-              <router-link to="/login" class="custom-anchor">Login</router-link>
+              <router-link to="/about" class="custom-anchor mr-2">about</router-link>
+              <router-link to="/login" class="custom-anchor">login</router-link>
             </div>
           </v-col>
 
@@ -38,14 +38,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/_variables.scss';
+
 .custom-anchor {
   text-decoration: none;
   cursor: pointer;
-  color: #757575;
+  color: $grey-darken-1;
   transition-duration: 0.5s;
 
   &:hover {
-    color: #424242;
+    color: $grey-darken-3;
   }
 }
 </style>
