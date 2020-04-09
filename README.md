@@ -2,7 +2,7 @@
 
 # Styles
 - Background
-  - [grey lighten-4 #F5F5F5](https://vuetifyjs.com/en/styles/colors/)
+  - [grey lighten-3 #EEEEEE](https://vuetifyjs.com/en/styles/colors/)
 
 - Font
   - Heading: [grey darken-4 #F5F5F5](https://vuetifyjs.com/en/styles/colors/)
