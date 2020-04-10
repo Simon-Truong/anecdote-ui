@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AppBar from './components/Appbar';
+import AppBar from './components/App-bar';
 import Footer from './components/Footer';
 
 export default {
@@ -40,6 +40,10 @@ export default {
     cursor: pointer;
     color: $grey-darken-1;
     transition-duration: 0.5s;
+
+    &.router-link-active {
+      color: $primary;
+    }
 
     &:hover {
       color: $primary;
