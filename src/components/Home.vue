@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-background">
+  <div>
     <v-container>
       <v-row>
         <v-col cols="6" />
@@ -67,7 +67,9 @@
 <script>
 export default {
   name: 'Home',
-  data() {}
+  data: () => ({
+
+  })
 };
 </script>
 
