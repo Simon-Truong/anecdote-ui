@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app light >
+    <v-app-bar app light>
       <v-container>
         <v-row>
           <v-col cols="3" />
@@ -35,16 +35,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '@/styles/_variables.scss';
-
-.custom-anchor {
-  text-decoration: none;
-  cursor: pointer;
-  color: $grey-darken-1;
-  transition-duration: 0.5s;
-
-  &:hover {
-    color: $grey-darken-3;
-  }
-}
 </style>

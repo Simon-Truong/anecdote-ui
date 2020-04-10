@@ -3,10 +3,9 @@
     <AppBar />
 
     <v-content>
-      <router-view />
+      <router-view class="content" />
+      <Footer />
     </v-content>
-
-    <Footer />
   </v-app>
 </template>
 
@@ -28,11 +27,35 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 @import '@/styles/_variables.scss';
 
-.main {
-  font-family: 'Inconsolata', 'Roboto', monospace;
-  background-color: $background-color;
+.v-application {
+  &.main {
+    font-family: 'Roboto', monospace;
+  }
+
+  .custom-anchor {
+    text-decoration: none;
+    cursor: pointer;
+    color: $grey-darken-1;
+    transition-duration: 0.5s;
+
+    &:hover {
+      color: $hover;
+    }
+  }
+
+  .custom-text-field {
+    border-radius: 0;
+  }
+
+  .custom-background {
+    background-color: $background-color;
+  }
+}
+
+.content {
+  height: 70%;
 }
 </style>
