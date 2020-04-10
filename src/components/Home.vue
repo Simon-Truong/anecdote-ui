@@ -5,7 +5,7 @@
 
       <v-row>
         <v-col cols="6" sm="6" md="3">
-          <v-text-field label="Solo" placeholder="search..." solo><i class="fas fa-search"></i></v-text-field>
+          <v-text-field placeholder="search..." outlined append-icon="fa-search"></v-text-field>
         </v-col>
       </v-row>
     </v-container>
