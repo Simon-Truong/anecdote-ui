@@ -3,7 +3,7 @@
     <AppBar />
 
     <v-content>
-      <router-view class="content" />
+      <router-view class="content custom-background" />
       <Footer />
     </v-content>
   </v-app>
@@ -42,7 +42,7 @@ export default {
     transition-duration: 0.5s;
 
     &:hover {
-      color: $hover;
+      color: $primary;
     }
   }
 
