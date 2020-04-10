@@ -1,7 +1,13 @@
 <template>
   <div>
-    <v-footer app light>
-      <v-col class="grey--text text--darken-4 text-center" cols="12">anecdote © 2020</v-col>
+    <v-footer color="white" padless>
+      <v-container>
+        <v-row>
+          <v-col col="12" class="py-0 d-flex justify-end">
+            <div class="grey--text text--darken-4">&copy; {{ new Date().getFullYear() }}</div>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-footer>
   </div>
 </template>
@@ -12,5 +18,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
 </style>
