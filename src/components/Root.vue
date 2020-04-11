@@ -9,6 +9,9 @@
             loading-text="Loading... Please wait"
             :headers="headers"
             :items="items"
+            :footer-props="{
+              'items-per-page-options': [5, 10, 15]
+              }"
           >
             <template v-slot:item.fullName="{ item }">
               <router-link to="/profile" class="custom-anchor font-weight-bold">{{ item.fullName }}</router-link>
