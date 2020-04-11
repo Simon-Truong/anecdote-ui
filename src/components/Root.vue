@@ -9,7 +9,25 @@
             loading-text="Loading... Please wait"
             :headers="headers"
             :items="items"
-          ></v-data-table>
+          >
+            <template v-slot:item.fullName="{ item }">
+              <router-link to="/profile" class="custom-anchor font-weight-bold">{{ item.fullName }}</router-link>
+            </template>
+            <!-- //TODO: profile -->
+
+            <template v-slot:item.tags="{ item }">
+              <span class="custom-table-data">{{ item.tags }}</span>
+            </template>
+
+            <template v-slot:item.actions>
+              <div class="d-flex justify-center">
+                <v-btn tile depressed small dark color="#1976d2" class="mr-2">Schedule</v-btn>
+                <!-- //TODO: schedule -->
+                <v-btn tile depressed small dark color="#1976d2">Message</v-btn>
+                <!-- //TODO: message -->
+              </div>
+            </template>
+          </v-data-table>
         </v-col>
         <v-col cols="3" />
       </v-row>
@@ -35,21 +53,22 @@ export default {
         text: 'Tags',
         value: 'tags',
         sortable: false, // TODO: sorting
-        width: '60%'
+        width: '50%'
       },
       {
-        // placeholder for "schedule" and "message" buttons
+        value: 'actions',
         sortable: false,
-        width: '20%'
+        width: '30%'
       }
     ],
-    items: SAMPLE_DATA
+    items: SAMPLE_DATA // TODO: use API
   })
 };
 </script>
 
 <style lang="scss">
 @import '@/styles/_variables.scss';
+
 .v-data-table.custom-headers.theme--light {
   .v-data-table__wrapper {
     table {
@@ -60,19 +79,11 @@ export default {
           }
         }
       }
-
-      tbody {
-        tr {
-          td {
-            color: $grey-darken-1;
-
-            &:nth-child(1) {
-              font-weight: bold;
-            }
-          }
-        }
-      }
     }
   }
+}
+
+.custom-table-data {
+  color: $grey-darken-1;
 }
 </style>
