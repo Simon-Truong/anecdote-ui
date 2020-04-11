@@ -30,7 +30,9 @@
               <v-row>
                 <v-col cols="4" />
 
-                <v-col cols="4" class="d-flex justify-end">
+                <v-col cols="4" class="d-flex justify-space-between">
+                  <router-link to="/" class="custom-anchor caption">Don't have an account? Sign up</router-link>
+
                   <v-btn tile depressed small dark color="#1976d2">Login</v-btn>
                 </v-col>
 
