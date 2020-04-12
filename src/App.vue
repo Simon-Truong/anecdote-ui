@@ -39,14 +39,14 @@ export default {
     text-decoration: none;
     cursor: pointer;
     color: $grey-darken-1;
-    transition-duration: 0.5s;
 
     &.router-link-active {
-      color: $primary;
+      font-weight: bold;
     }
 
     &:hover {
       color: $primary;
+      transition-duration: 0.5s;
     }
   }
 
