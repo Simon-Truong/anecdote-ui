@@ -41,6 +41,8 @@
 <script>
 import SAMPLE_DATA from '../_/_sample-data';
 
+const axios = require('axios');
+
 export default {
   name: 'Root',
   data: () => ({
@@ -65,7 +67,13 @@ export default {
       }
     ],
     items: SAMPLE_DATA // TODO: use API
-  })
+  }),
+  created: () => {
+    axios
+      .get(`${process.env.VUE_APP_API_URL}/users`)
+      .then(response => console.log(response.data))
+      .catch(error => console.log({ error }));
+  }
 };
 </script>
 
