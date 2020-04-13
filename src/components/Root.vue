@@ -6,6 +6,7 @@
         <v-col cols="6">
           <v-data-table
             class="custom-headers"
+            :loading="isLoading"
             loading-text="Loading... Please wait"
             :headers="headers"
             :items="items"
@@ -45,6 +46,9 @@ export default {
   name: 'Root',
   data() {
     return {
+      query: null,
+      isLoading: true,
+      // grid
       headers: [
         // TODO: avatars
         {
@@ -71,7 +75,7 @@ export default {
   methods: {
     getUsers() {
       axios
-        .get(`${process.env.VUE_APP_API_URL}/users`)
+        .get(`${process.env.VUE_APP_API_URL}/users?q=${this.query}`)
         .then(response => {
           const users = response.data;
           this.items = users.map(user => {
@@ -79,11 +83,15 @@ export default {
             user._tags = user.tags.join(', ');
             return user;
           });
+
+          this.isLoading = false;
         })
         .catch(error => console.log({ error }));
     }
   },
   created() {
+    this.query = this.$route.query.q;
+
     this.getUsers();
   }
 };

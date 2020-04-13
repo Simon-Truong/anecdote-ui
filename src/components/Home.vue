@@ -18,9 +18,12 @@
                 class="custom-text-field"
                 outlined
                 append-icon="fa-search"
-                hint="search people, interests..."
+                hint="search people, tags..."
                 persistent-hint
                 dense
+                @click:append="search"
+                @keydown.enter="search"
+                v-model="searchQuery"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -67,7 +70,24 @@
 <script>
 export default {
   name: 'Home',
-  data() {}
+  data() {
+    return {
+      searchQuery: ''
+    };
+  },
+  methods: {
+    search() {
+      const q = this.searchQuery;
+      const routeOptions = {
+        path: 'root',
+        query: {
+          q
+        }
+      };
+      
+      this.$router.push(routeOptions);
+    }
+  }
 };
 </script>
 
