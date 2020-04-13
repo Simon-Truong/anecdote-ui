@@ -15,6 +15,8 @@
 
           <v-col cols="3">
             <div class="text-right">
+              <router-link to="/root?q=" class="custom-anchor">browse</router-link>
+              <span> | </span>
               <router-link to="/about" class="custom-anchor">about</router-link>
               <span> | </span>
               <router-link to="/login" class="custom-anchor">login</router-link>

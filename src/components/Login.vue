@@ -11,7 +11,7 @@
                 <v-col cols="4" />
 
                 <v-col cols="4">
-                  <v-text-field label="First Name"></v-text-field>
+                  <v-text-field dense label="Email"></v-text-field>
                 </v-col>
 
                 <v-col cols="4" />
@@ -21,7 +21,7 @@
                 <v-col cols="4" />
 
                 <v-col cols="4" class="pt-0">
-                  <v-text-field class="pt-0" label="Last Name"></v-text-field>
+                  <v-text-field dense class="pt-0" label="Password" :type="'password'"></v-text-field>
                 </v-col>
 
                 <v-col cols="4" />
