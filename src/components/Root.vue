@@ -13,13 +13,13 @@
               'items-per-page-options': [5, 10, 15]
               }"
           >
-            <template v-slot:item.fullName="{ item }">
-              <router-link to="/profile" class="custom-anchor font-weight-bold">{{ item.fullName }}</router-link>
+            <template v-slot:item._fullName="{ item }">
+              <router-link to="/profile" class="custom-anchor font-weight-bold">{{ item._fullName }}</router-link>
             </template>
             <!-- //TODO: profile -->
 
-            <template v-slot:item.tags="{ item }">
-              <span class="custom-table-data">{{ item.tags }}</span>
+            <template v-slot:item._tags="{ item }">
+              <span class="custom-table-data">{{ item._tags }}</span>
             </template>
 
             <template v-slot:item.actions>
@@ -39,40 +39,52 @@
 </template>
 
 <script>
-import SAMPLE_DATA from '../_/_sample-data';
-
 const axios = require('axios');
 
 export default {
   name: 'Root',
-  data: () => ({
-    headers: [
-      // TODO: avatars
-      {
-        text: 'Full Name',
-        value: 'fullName',
-        sortable: false, // TODO: sorting
-        width: '20%'
-      },
-      {
-        text: 'Tags',
-        value: 'tags',
-        sortable: false, // TODO: sorting
-        width: '50%'
-      },
-      {
-        value: 'actions',
-        sortable: false,
-        width: '30%'
-      }
-    ],
-    items: SAMPLE_DATA // TODO: use API
-  }),
-  created: () => {
-    axios
-      .get(`${process.env.VUE_APP_API_URL}/users`)
-      .then(response => console.log(response.data))
-      .catch(error => console.log({ error }));
+  data() {
+    return {
+      headers: [
+        // TODO: avatars
+        {
+          text: 'Full Name',
+          value: '_fullName',
+          sortable: false, // TODO: sorting
+          width: '20%'
+        },
+        {
+          text: 'Tags',
+          value: '_tags',
+          sortable: false, // TODO: sorting
+          width: '50%'
+        },
+        {
+          value: 'actions',
+          sortable: false,
+          width: '30%'
+        }
+      ],
+      items: []
+    };
+  },
+  methods: {
+    getUsers() {
+      axios
+        .get(`${process.env.VUE_APP_API_URL}/users`)
+        .then(response => {
+          const users = response.data;
+          this.items = users.map(user => {
+            user._fullName = `${user.first_name} ${user.surname}`;
+            user._tags = user.tags.join(', ');
+            return user;
+          });
+        })
+        .catch(error => console.log({ error }));
+    }
+  },
+  created() {
+    this.getUsers();
   }
 };
 </script>
