@@ -21,9 +21,9 @@ export default {
     Footer
   },
 
-  data: () => ({
-    //
-  })
+  data() {
+    return {}
+  }
 };
 </script>
 
