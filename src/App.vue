@@ -22,7 +22,7 @@ export default {
   },
 
   data() {
-    return {}
+    return {};
   }
 };
 </script>
@@ -50,8 +50,17 @@ export default {
     }
   }
 
-  .custom-text-field {
-    border-radius: 0;
+  .v-text-field.v-input--dense {
+    &.custom-text-field {
+      border-radius: 0;
+      height: 2.5rem;
+
+      .v-input__append-inner {
+        .v-input__icon > .v-icon {
+          margin-top: 0;
+        }
+      }
+    }
   }
 
   .custom-background {

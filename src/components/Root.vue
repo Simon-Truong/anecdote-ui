@@ -14,6 +14,24 @@
               'items-per-page-options': [5, 10, 15]
               }"
           >
+            <template v-slot:top>
+              <v-container class="py-0">
+                <v-row>
+                  <v-col cols="6" class="pb-0">
+                    <v-text-field
+                      class="custom-text-field"
+                      append-icon="fa-search"
+                      outlined
+                      dense
+                      @click:append="getUsers"
+                      @keydown.enter="getUsers"
+                      v-model="query"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </template>
+
             <template v-slot:item._fullName="{ item }">
               <router-link to="/profile" class="custom-anchor font-weight-bold">{{ item._fullName }}</router-link>
             </template>
