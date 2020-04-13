@@ -32,6 +32,12 @@
               </v-container>
             </template>
 
+            <template v-slot:item._initials="{ item }">
+              <v-avatar :color="getRandomAvatarColour()" size="30" tile>
+                <span class="white--text">{{ item._initials }}</span>
+              </v-avatar>
+            </template>
+
             <template v-slot:item._fullName="{ item }">
               <router-link to="/profile" class="custom-anchor font-weight-bold">{{ item._fullName }}</router-link>
             </template>
@@ -59,6 +65,7 @@
 
 <script>
 const axios = require('axios');
+import defaultAvatarColours from '../assets/avatar/default-colours';
 
 export default {
   name: 'Root',
@@ -68,7 +75,11 @@ export default {
       isLoading: true,
       // grid
       headers: [
-        // TODO: avatars
+        {
+          value: '_initials',
+          sortable: false,
+          width: '10%'
+        },
         {
           text: 'Full Name',
           value: '_fullName',
@@ -84,7 +95,7 @@ export default {
         {
           value: 'actions',
           sortable: false,
-          width: '30%'
+          width: '20%'
         }
       ],
       items: []
@@ -99,12 +110,17 @@ export default {
           this.items = users.map(user => {
             user._fullName = `${user.first_name} ${user.surname}`;
             user._tags = user.tags.join(', ');
+            user._initials = `${user.first_name[0]}${user.surname[0]}`;
             return user;
           });
 
           this.isLoading = false;
         })
         .catch(error => console.log({ error }));
+    },
+    getRandomAvatarColour() {
+      const randomIndex = Math.floor(Math.random() * 10);
+      return defaultAvatarColours[randomIndex];
     }
   },
   created() {
