@@ -40,8 +40,8 @@ export default {
     cursor: pointer;
     color: $grey-darken-1;
 
-    &.router-link-active {
-      font-weight: bold;
+    &.router-link-active:not(.main-heading) {
+      text-decoration: underline;
     }
 
     &:hover {

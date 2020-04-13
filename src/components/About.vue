@@ -48,7 +48,7 @@
 <script>
 export default {
   name: 'About',
-  data: () => ({})
+  data() {}
 };
 </script>
 

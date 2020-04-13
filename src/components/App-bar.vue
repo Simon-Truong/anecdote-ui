@@ -7,7 +7,7 @@
 
           <v-col cols="3">
             <v-toolbar-title>
-              <router-link to="./" class="custom-anchor">
+              <router-link to="./" class="custom-anchor main-heading">
                 <span class="grey--text text--darken-4">anecdote</span>
               </router-link>
             </v-toolbar-title>
