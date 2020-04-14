@@ -98,6 +98,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import moment from 'moment';
+
 export default {
   name: 'Home',
   data() {
@@ -137,10 +140,7 @@ export default {
             return 'Password must contain one special character.';
           }
 
-          if (
-            value.includes(this.firstName) ||
-            value.includes(this.surname) ||
-            value.includes(this.email)) {
+          if (value.includes(this.firstName) || value.includes(this.surname) || value.includes(this.email)) {
             return 'Password must not contain first name, surname or email.';
           }
 
@@ -162,7 +162,18 @@ export default {
       this.$router.push(routeOptions);
     },
     submit() {
-      console.log(this.firstName, this.surname, this.email, this.password);
+      const newUser = {
+        firstName: this.firstName,
+        surname: this.surname,
+        email: this.email,
+        password: this.password,
+        joined: moment().format()
+      };
+
+      axios
+        .post(`${process.env.VUE_APP_API_URL}/user`, newUser)
+        .then(response => console.log({ response }))
+        .catch(error => console.log({ error }));
     }
   }
 };
