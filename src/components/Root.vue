@@ -17,7 +17,7 @@
             <template v-slot:top>
               <v-container class="py-0">
                 <v-row>
-                  <v-col cols="6" class="pb-0">
+                  <v-col cols="4" class="pb-0">
                     <v-text-field
                       class="custom-text-field"
                       append-icon="fa-search"
