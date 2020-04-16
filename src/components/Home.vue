@@ -32,7 +32,7 @@
         </v-col>
 
         <v-col cols="6">
-          <v-form>
+          <v-form v-model="isFormValid">
             <v-container class="pt-0">
               <v-row>
                 <v-col cols="3">
@@ -86,7 +86,15 @@
 
               <v-row>
                 <v-col cols="6" class="d-flex justify-end">
-                  <v-btn tile depressed small dark @click="submit()" color="#1976d2">Sign up</v-btn>
+                  <v-btn
+                    tile
+                    depressed
+                    small
+                    dark
+                    :disabled="!isFormValid"
+                    @click="submit()"
+                    color="#1976d2"
+                  >Sign up</v-btn>
                 </v-col>
               </v-row>
             </v-container>
@@ -105,6 +113,7 @@ export default {
   name: 'Home',
   data() {
     return {
+      isFormValid: false,
       searchQuery: '',
       showPassword: false,
       firstName: '',
@@ -171,7 +180,7 @@ export default {
       };
 
       axios
-        .post(`${process.env.VUE_APP_API_URL}/user`, newUser)
+        .post(`${process.env.VUE_APP_API_URL}/signup`, newUser)
         .then(response => console.log({ response }))
         .catch(error => console.log({ error }));
     }
