@@ -12,6 +12,6 @@ export default {
     return apiClient.post(`/signup`, newUser);
   },
   logIn(body) {
-    apiClient.post(`/login`, body);
+    return apiClient.post(`/login`, body);
   }
 };

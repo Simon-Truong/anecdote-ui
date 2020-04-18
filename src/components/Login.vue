@@ -87,7 +87,10 @@ export default {
 
       apiClient
         .logIn(body)
-        .then(response => console.log({ response }))
+        .then(response => {
+          const { data } = response;
+          localStorage.setItem('token', data.token);
+        })
         .catch(error => console.log({ error }));
     }
   }
