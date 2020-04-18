@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiClient from '../service/user.service';
 
 export default {
   name: 'Login',
@@ -85,8 +85,8 @@ export default {
         password: this.password
       };
 
-      axios
-        .post(`${process.env.VUE_APP_API_URL}/login`, body)
+      apiClient
+        .logIn(body)
         .then(response => console.log({ response }))
         .catch(error => console.log({ error }));
     }
