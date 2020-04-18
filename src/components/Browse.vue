@@ -64,11 +64,11 @@
 </template>
 
 <script>
-const axios = require('axios');
-import defaultAvatarColours from '../assets/avatar/default-colours';
+import defaultAvatarColours from '../shared/avatar-default-colours';
+import apiClient from '../service/user.service';
 
 export default {
-  name: 'Root',
+  name: 'Browse',
   data() {
     return {
       query: null,
@@ -103,10 +103,11 @@ export default {
   },
   methods: {
     getUsers() {
-      axios
-        .get(`${process.env.VUE_APP_API_URL}/users?q=${this.query}`)
+      apiClient
+        .getUsers(this.query)
         .then(response => {
           const users = response.data;
+          
           this.items = users.map(user => {
             user._fullName = `${user.first_name} ${user.surname}`;
             user._tags = user.tags.join(', ');
@@ -126,7 +127,7 @@ export default {
   created() {
     this.query = this.$route.query.q;
 
-    this.getUsers();
+    this.getUsers(this.query);
   }
 };
 </script>

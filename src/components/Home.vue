@@ -106,8 +106,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import moment from 'moment';
+import apiClient from '../service/user.service';
 
 export default {
   name: 'Home',
@@ -162,7 +162,7 @@ export default {
     search() {
       const q = this.searchQuery;
       const routeOptions = {
-        path: 'root',
+        path: 'browse',
         query: {
           q
         }
@@ -179,8 +179,8 @@ export default {
         joined: moment().format()
       };
 
-      axios
-        .post(`${process.env.VUE_APP_API_URL}/signup`, newUser)
+      apiClient
+        .signUp(newUser)
         .then(response => console.log({ response }))
         .catch(error => console.log({ error }));
     }

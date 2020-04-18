@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Home from '../components/Home';
 import About from '../components/About';
 import Login from '../components/Login';
-import Root from '../components/Root';
+import Browse from '../components/Browse';
 
 Vue.use(VueRouter);
 
@@ -24,9 +24,9 @@ const routes = [
     component: Login
   },
   {
-    path: '/root',
-    name: 'root',
-    component: Root
+    path: '/browse',
+    name: 'browse',
+    component: Browse
   },
   {
     path: '/*',
