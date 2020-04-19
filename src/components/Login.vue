@@ -5,13 +5,19 @@
         <v-col cols="3" />
 
         <v-col cols="6">
-          <v-form v-model="isFormValid">
+          <v-form v-model="isFormValid" ref="form">
             <v-container>
               <v-row>
                 <v-col cols="4" />
 
                 <v-col cols="4">
-                  <v-text-field dense label="Email" v-model="email" :rules="[rules.required]"></v-text-field>
+                  <v-text-field
+                    dense
+                    label="Email"
+                    v-model="email"
+                    :rules="[rules.required]"
+                    @keydown.enter="submit"
+                  ></v-text-field>
                 </v-col>
 
                 <v-col cols="4" />
@@ -31,6 +37,7 @@
                     counter
                     @click:append="showPassword = !showPassword"
                     :rules="[rules.required]"
+                    @keydown.enter="submit"
                   ></v-text-field>
                 </v-col>
                 <v-col cols="4" />
@@ -49,7 +56,7 @@
                     dark
                     color="#1976d2"
                     :disabled="!isFormValid"
-                    @click="submit()"
+                    @click="submit"
                   >Login</v-btn>
                 </v-col>
 
@@ -83,6 +90,12 @@ export default {
   },
   methods: {
     submit() {
+      this.$refs.form.validate();
+
+      if (!this.isFormValid) {
+        return;
+      }
+
       const body = {
         email: this.email,
         password: this.password

@@ -32,7 +32,7 @@
         </v-col>
 
         <v-col cols="6">
-          <v-form v-model="isFormValid">
+          <v-form v-model="isFormValid" ref="form">
             <v-container class="pt-0">
               <v-row>
                 <v-col cols="3">
@@ -42,6 +42,7 @@
                     label="First Name"
                     v-model="firstName"
                     :rules="[rules.required]"
+                    @keydown.enter="submit"
                   ></v-text-field>
                 </v-col>
 
@@ -52,6 +53,7 @@
                     label="Surname"
                     v-model="surname"
                     :rules="[rules.required]"
+                    @keydown.enter="submit"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -64,6 +66,7 @@
                     label="Email"
                     v-model="email"
                     :rules="[rules.required, rules.email]"
+                    @keydown.enter="submit"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -80,6 +83,7 @@
                     counter
                     @click:append="showPassword = !showPassword"
                     :rules="[rules.required, rules.minimumLength, rules.password]"
+                    @keydown.enter="submit"
                   ></v-text-field>
                 </v-col>
               </v-row>
@@ -92,7 +96,7 @@
                     small
                     dark
                     :disabled="!isFormValid"
-                    @click="submit()"
+                    @click="submit"
                     color="#1976d2"
                   >Sign up</v-btn>
                 </v-col>
@@ -171,6 +175,12 @@ export default {
       this.$router.push(routeOptions);
     },
     submit() {
+      this.$refs.form.validate();
+
+      if (!this.isFormValid) {
+        return;
+      }
+
       const newUser = {
         firstName: this.firstName,
         surname: this.surname,
