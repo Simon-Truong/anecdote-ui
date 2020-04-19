@@ -74,6 +74,10 @@ export default {
       color: white;
     }
   }
+
+  .v-input--has-state.error--text .v-label {
+    animation: none !important;
+  }
 }
 
 .content {
