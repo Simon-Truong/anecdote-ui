@@ -26,11 +26,13 @@
                     class="pt-0"
                     label="Password"
                     v-model="password"
-                    :type="'password'"
+                    :type="showPassword ? 'text': 'password'"
+                    :append-icon="showPassword ? 'mdi-eye': 'mdi-eye-off'"
+                    counter
+                    @click:append="showPassword = !showPassword"
                     :rules="[rules.required]"
                   ></v-text-field>
                 </v-col>
-
                 <v-col cols="4" />
               </v-row>
 
@@ -71,6 +73,7 @@ export default {
   data() {
     return {
       isFormValid: false,
+      showPassword: false,
       email: '',
       password: '',
       rules: {
