@@ -66,6 +66,14 @@ export default {
   .custom-background {
     background-color: $background-color;
   }
+
+  .v-btn.v-btn--depressed.v-btn--disabled.v-btn--tile.theme--dark.v-size--small {
+    background-color: $primary-disabled !important;
+
+    .v-btn__content {
+      color: white;
+    }
+  }
 }
 
 .content {

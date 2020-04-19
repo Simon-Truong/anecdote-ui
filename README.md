@@ -12,3 +12,4 @@
 
 - Button
   - Primary: blue darken-2 #1976d2
+  - Primary-Disabled: blue lighten-3 #90CAF9
