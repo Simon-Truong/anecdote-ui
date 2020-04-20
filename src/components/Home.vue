@@ -89,6 +89,34 @@
               </v-row>
 
               <v-row>
+                <v-col cols="6" class="py-0">
+                  <v-combobox
+                    class="pt-0"
+                    dense
+                    label="Tags"
+                    outlined
+                    multiple
+                    hide-selected
+                    :items="items"
+                    v-model="chips"
+                    :search-input.sync="searchInput"
+                  >
+                    <template v-slot:no-data>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            No results matching "
+                            <strong>{{ searchInput }}</strong>". Press
+                            <kbd>enter</kbd> to create a new one
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                  </v-combobox>
+                </v-col>
+              </v-row>
+
+              <v-row>
                 <v-col cols="6" class="d-flex justify-end">
                   <v-btn
                     tile
@@ -124,6 +152,9 @@ export default {
       surname: '',
       email: '',
       password: '',
+      items: [],
+      chips: [],
+      searchInput: '',
       rules: {
         required: value => !!value || 'Required',
         email: value => {
