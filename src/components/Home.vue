@@ -98,8 +98,10 @@
                     multiple
                     hide-selected
                     :items="items"
-                    v-model="chips"
+                    v-model="tags"
                     :search-input.sync="searchInput"
+                    hint="Describe yourself"
+                    persistent-hint
                   >
                     <template v-slot:no-data>
                       <v-list-item>
@@ -111,6 +113,18 @@
                           </v-list-item-title>
                         </v-list-item-content>
                       </v-list-item>
+                    </template>
+
+                    <template v-slot:selection="{ attrs, item, parent, selected }">
+                      <v-chip
+                        v-bind="attrs"
+                        :input-value="selected"
+                        label
+                        small
+                      >
+                        <span class="pr-2">{{ item }}</span>
+                        <v-icon small @click="parent.selectItem(item)">fas fa-times</v-icon>
+                      </v-chip>
                     </template>
                   </v-combobox>
                 </v-col>
@@ -152,8 +166,8 @@ export default {
       surname: '',
       email: '',
       password: '',
-      items: [],
-      chips: [],
+      items: ['Chef', 'Doctor', 'Rock Climbing'],
+      tags: [],
       searchInput: '',
       rules: {
         required: value => !!value || 'Required',
@@ -217,7 +231,8 @@ export default {
         surname: this.surname,
         email: this.email,
         password: this.password,
-        joined: moment().format()
+        joined: moment().format(),
+        tags: this.tags
       };
 
       apiClient
