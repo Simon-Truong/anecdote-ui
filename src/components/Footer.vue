@@ -6,7 +6,7 @@
           <v-col cols="3" />
 
           <v-col cols="6" class="pt-0 d-flex justify-end">
-            <router-link to="/feedback" class="custom-anchor body-2">Feedback?</router-link>
+            <router-link v-if="isAuthenticated" to="/feedback" class="custom-anchor body-2">Feedback?</router-link>
           </v-col>
 
           <v-col cols="3" />
@@ -18,7 +18,12 @@
 
 <script>
 export default {
-  name: 'Footer'
+  name: 'Footer',
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated
+    }
+  }
 };
 </script>
 

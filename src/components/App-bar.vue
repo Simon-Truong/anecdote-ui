@@ -15,11 +15,21 @@
 
           <v-col cols="3">
             <div class="text-right">
-              <router-link to="/browse?q=" class="custom-anchor">browse</router-link>
-              <span> | </span>
-              <router-link to="/about" class="custom-anchor">about</router-link>
-              <span> | </span>
-              <router-link to="/login" class="custom-anchor">login</router-link>
+              <nav>
+                <ul>
+                  <div v-if="!isAuthenticated">
+                    <li v-for="route in guestRoutes" :key="route.label">
+                      <router-link :to="route.link" class="custom-anchor">{{ route.label }}</router-link>
+                    </li>
+                  </div>
+
+                  <div v-if="isAuthenticated">
+                    <li v-for="route in authenticatedRoutes" :key="route.label">
+                      <router-link :to="route.link" class="custom-anchor">{{ route.label }}</router-link>
+                    </li>
+                  </div>
+                </ul>
+              </nav>
             </div>
           </v-col>
 
@@ -32,9 +42,65 @@
 
 <script>
 export default {
-  name: 'Appbar'
+  name: 'Appbar',
+  data() {
+    return {
+      guestRoutes: [
+        {
+          label: 'browse',
+          link: '/browse?q='
+        },
+        {
+          label: 'about',
+          link: '/about'
+        },
+        {
+          label: 'login',
+          link: '/login'
+        }
+      ],
+      authenticatedRoutes: [
+        {
+          label: 'browse',
+          link: '/browse?q='
+        },
+        {
+          label: 'profile',
+          link: '/profile'
+        },
+        {
+          label: 'about',
+          link: '/about'
+        },
+        {
+          label: 'logout',
+          link: '/logout'
+        }
+      ]
+    };
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    }
+  }
 };
 </script>
 
 <style scoped lang="scss">
+nav {
+  ul {
+    list-style-type: none;
+
+    li {
+      display: inline;
+    }
+
+    li + li:before {
+      content: '|';
+      color: black;
+      padding: 0 5px;
+    }
+  }
+}
 </style>

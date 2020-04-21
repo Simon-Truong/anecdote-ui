@@ -105,7 +105,10 @@ export default {
         .logIn(body)
         .then(response => {
           const { data } = response;
-          localStorage.setItem('token', data.token);
+          localStorage.setItem('accessToken', data.token);
+
+          this.$store.commit('login');
+          this.$router.push('/browse');
         })
         .catch(error => console.log({ error }));
     }

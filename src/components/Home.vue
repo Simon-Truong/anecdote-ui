@@ -5,7 +5,7 @@
         <v-col cols="6" />
 
         <v-col cols="6">
-          <h2 class="pl-3">sign up</h2>
+          <h2 class="pl-3" v-if="!isAuthenticated">sign up</h2>
         </v-col>
       </v-row>
 
@@ -32,7 +32,7 @@
         </v-col>
 
         <v-col cols="6">
-          <v-form v-model="isFormValid" ref="form">
+          <v-form v-if="!isAuthenticated" v-model="isFormValid" ref="form">
             <v-container class="pt-0">
               <v-row>
                 <v-col cols="3">
@@ -116,12 +116,7 @@
                     </template>
 
                     <template v-slot:selection="{ attrs, item, parent, selected }">
-                      <v-chip
-                        v-bind="attrs"
-                        :input-value="selected"
-                        label
-                        small
-                      >
+                      <v-chip v-bind="attrs" :input-value="selected" label small>
                         <span class="pr-2">{{ item }}</span>
                         <v-icon small @click="parent.selectItem(item)">fas fa-times</v-icon>
                       </v-chip>
@@ -239,6 +234,11 @@ export default {
         .signUp(newUser)
         .then(response => console.log({ response }))
         .catch(error => console.log({ error }));
+    }
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
     }
   }
 };

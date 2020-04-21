@@ -4,6 +4,7 @@ import Home from '../components/Home';
 import About from '../components/About';
 import Login from '../components/Login';
 import Browse from '../components/Browse';
+import store from '../store/store';
 
 Vue.use(VueRouter);
 
@@ -35,7 +36,20 @@ const routes = [
   }
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
   routes,
   mode: 'history'
 });
+
+router.beforeEach((to, from, next) => {
+  console.log(to, from, next);
+  if (to.path === '/logout') {
+    localStorage.removeItem('accessToken');
+    store.commit('logout');
+    next('/');
+  }
+
+  next();
+});
+
+export default router;
