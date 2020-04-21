@@ -107,7 +107,7 @@ export default {
         .getUsers(this.query)
         .then(response => {
           const users = response.data;
-          
+
           this.items = users.map(user => {
             user._fullName = `${user.first_name} ${user.surname}`;
             user._tags = user.tags.join(', ');
