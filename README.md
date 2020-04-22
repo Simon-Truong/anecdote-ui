@@ -1,5 +1,10 @@
 # anecdote-ui
 
+# .env
+```
+VUE_APP_API_URL=
+```
+
 # Styles
 [Vuetify color palette](https://vuetifyjs.com/en/styles/colors/)
 - Background
