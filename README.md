@@ -3,6 +3,10 @@
 # .env
 ```
 VUE_APP_API_URL=
+<<<<<<< HEAD
+=======
+VUE_APP_ENV=
+>>>>>>> 6a79f45b6a804b422f57a8cf536499f69c27e846
 ```
 
 # Styles
