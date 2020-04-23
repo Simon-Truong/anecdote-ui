@@ -42,10 +42,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-<<<<<<< HEAD
-  console.log(to, from, next);
-=======
->>>>>>> 6a79f45b6a804b422f57a8cf536499f69c27e846
   if (to.path === '/logout') {
     localStorage.removeItem('accessToken');
     store.commit('logout');
