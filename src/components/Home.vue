@@ -147,7 +147,6 @@
 </template>
 
 <script>
-import moment from 'moment';
 import apiClient from '../service/user.service';
 
 export default {
@@ -226,7 +225,6 @@ export default {
         surname: this.surname,
         email: this.email,
         password: this.password,
-        joined: moment().format(),
         tags: this.tags
       };
 
