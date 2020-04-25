@@ -13,5 +13,8 @@ export default {
   },
   logIn(body) {
     return apiClient.post(`/login`, body);
+  },
+  verify(body) {
+    return apiClient.post(`/verify`, body);
   }
 };

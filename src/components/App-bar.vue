@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="['verify'].indexOf($route.name) === -1">
     <v-app-bar app light>
       <v-container>
         <v-row>

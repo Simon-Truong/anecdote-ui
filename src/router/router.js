@@ -38,7 +38,7 @@ const routes = [
   {
     path: '/*',
     name: 'non-existant',
-    component: Home
+    redirect: '/'
   }
 ];
 
