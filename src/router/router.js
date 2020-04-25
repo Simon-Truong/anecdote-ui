@@ -4,6 +4,7 @@ import Home from '../components/Home';
 import About from '../components/About';
 import Login from '../components/Login';
 import Browse from '../components/Browse';
+import Verify from '../components/Verify';
 import store from '../store/store';
 
 Vue.use(VueRouter);
@@ -28,6 +29,11 @@ const routes = [
     path: '/browse',
     name: 'browse',
     component: Browse
+  },
+  {
+    path: '/verify/:id',
+    name: 'verify',
+    component: Verify
   },
   {
     path: '/*',
