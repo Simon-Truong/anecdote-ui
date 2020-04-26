@@ -17,7 +17,7 @@
               <v-text-field
                 class="custom-text-field"
                 append-icon="fa-search"
-                hint="search people, tags..."
+                hint="Search people, tags..."
                 outlined
                 persistent-hint
                 dense
