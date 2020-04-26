@@ -36,6 +36,11 @@ const routes = [
     component: Verify
   },
   {
+    path: '/logout',
+    name: 'logout',
+    redirect: '/'
+  },
+  {
     path: '/*',
     name: 'non-existant',
     redirect: '/'
@@ -48,10 +53,9 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.path === '/logout') {
+  if (to.redirectedFrom === '/logout') {
     localStorage.removeItem('accessToken');
     store.commit('logout');
-    next('/');
   }
 
   next();
