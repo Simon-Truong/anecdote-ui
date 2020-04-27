@@ -11,7 +11,14 @@
             border="left"
             text
             outlined
-          >{{ errorMessage }}</v-alert>
+          >{{ errorMessage }}
+          <v-dialog v-if="unverifiedEmail">
+            <template v-slot:activator="{ on }">
+              <a href="" v-on:click.prevent="on">Resend Code</a>
+            </template>
+
+          </v-dialog>
+          </v-alert>
         </v-col>
       </v-row>
 
@@ -93,10 +100,13 @@ export default {
   name: 'Login',
   data() {
     return {
+      // form
       isFormValid: false,
       showPassword: false,
+      // alerts
       showErrorAlert: false,
       errorMessage: '',
+      unverifiedEmail: false,
       email: '',
       password: '',
       rules: {
@@ -129,16 +139,20 @@ export default {
         .catch(error => this.processErrorResponse(error.response));
     },
     processErrorResponse(response) {
-      console.log({ response });
+      const status = response.status;
 
-      if (response.status === 500) {
+      if (status === 500) {
         console.log(response.data);
         return;
       }
 
-      if (response.status === 400) {
+      if (status === 400 || status === 401) {
         this.showErrorAlert = true;
         this.errorMessage = response.data;
+
+        if (status === 401) {
+          this.unverifiedEmail = true;
+        }
       }
     }
   }
