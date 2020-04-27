@@ -1,11 +1,17 @@
 <template>
   <div>
     <v-container>
-      <v-row>
+      <v-row class="d-flex justify-center" v-if="showSuccessAlert">
+        <v-col cols="6">
+          <v-alert class="mb-0" dismissible type="success" border="left" dense text @input="showSuccessAlert = false">Sucessfully signed up, please verify your email</v-alert>
+        </v-col>
+      </v-row>
+
+      <v-row v-if="showNoAlert">
         <v-col cols="6" />
 
         <v-col cols="6">
-          <h2 class="pl-3" v-if="!isAuthenticated">sign up</h2>
+          <h2  class="pl-3" v-if="!isAuthenticated">sign up</h2>
         </v-col>
       </v-row>
 
@@ -156,6 +162,7 @@ export default {
       isFormValid: false,
       searchQuery: '',
       showPassword: false,
+      showSuccessAlert: true,
       firstName: '',
       surname: '',
       email: '',
@@ -230,13 +237,16 @@ export default {
 
       apiClient
         .signUp(newUser)
-        .then(response => console.log({ response }))
+        .then(() => this.showSuccessAlert = true)
         .catch(error => console.log({ error }));
     }
   },
   computed: {
     isAuthenticated() {
       return this.$store.getters.isAuthenticated;
+    },
+    showNoAlert() {
+      return !this.showSuccessAlert;
     }
   }
 };
