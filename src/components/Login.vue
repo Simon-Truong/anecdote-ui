@@ -1,6 +1,20 @@
 <template>
   <div>
     <v-container>
+      <v-row class="d-flex justify-center">
+        <v-col cols="3">
+          <v-alert
+            v-if="showErrorAlert"
+            class="mb-0"
+            type="error"
+            dense
+            border="left"
+            text
+            outlined
+          >{{ errorMessage }}</v-alert>
+        </v-col>
+      </v-row>
+
       <v-row>
         <v-col cols="3" />
 
@@ -81,6 +95,8 @@ export default {
     return {
       isFormValid: false,
       showPassword: false,
+      showErrorAlert: false,
+      errorMessage: '',
       email: '',
       password: '',
       rules: {
@@ -110,7 +126,20 @@ export default {
           this.$store.commit('login');
           this.$router.push('/browse');
         })
-        .catch(error => console.log({ error }));
+        .catch(error => this.processErrorResponse(error.response));
+    },
+    processErrorResponse(response) {
+      console.log({ response });
+
+      if (response.status === 500) {
+        console.log(response.data);
+        return;
+      }
+
+      if (response.status === 400) {
+        this.showErrorAlert = true;
+        this.errorMessage = response.data;
+      }
     }
   }
 };

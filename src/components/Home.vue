@@ -263,7 +263,7 @@ export default {
         .signUp(newUser)
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))
-        .finally(() => this.showSpinner = false);
+        .finally(() => (this.showSpinner = false));
     },
     processSuccessResponse(message) {
       this.showErrorAlert = false;
