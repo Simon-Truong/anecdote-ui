@@ -3,7 +3,20 @@
     <v-container>
       <v-row class="d-flex justify-center" v-if="showSuccessAlert">
         <v-col cols="6">
-          <v-alert class="mb-0" dismissible type="success" border="left" dense text @input="showSuccessAlert = false">Sucessfully signed up, please verify your email</v-alert>
+          <v-alert
+            class="mb-0"
+            type="success"
+            border="left"
+            dense
+            text
+            outlined
+          >Sucessfully signed up, please verify your email</v-alert>
+        </v-col>
+      </v-row>
+
+      <v-row class="d-flex justify-center" v-if="showErrorAlert">
+        <v-col cols="6">
+          <v-alert class="mb-0" type="error" border="left" dense text outlined>{{ errorMessage }}</v-alert>
         </v-col>
       </v-row>
 
@@ -11,7 +24,7 @@
         <v-col cols="6" />
 
         <v-col cols="6">
-          <h2  class="pl-3" v-if="!isAuthenticated">sign up</h2>
+          <h2 class="pl-3" v-if="!isAuthenticated">sign up</h2>
         </v-col>
       </v-row>
 
@@ -133,6 +146,9 @@
 
               <v-row>
                 <v-col cols="6" class="d-flex justify-end">
+                  <span v-if="showSpinner" class="d-flex align-center mr-2">
+                    <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                  </span>
                   <v-btn
                     tile
                     depressed
@@ -162,7 +178,13 @@ export default {
       isFormValid: false,
       searchQuery: '',
       showPassword: false,
-      showSuccessAlert: true,
+      // alerts
+      showSuccessAlert: false,
+      successMessage: '',
+      showErrorAlert: false,
+      errorMessage: '',
+      // form
+      showSpinner: false,
       firstName: '',
       surname: '',
       email: '',
@@ -235,10 +257,34 @@ export default {
         tags: this.tags
       };
 
+      this.showSpinner = true;
+
       apiClient
         .signUp(newUser)
-        .then(() => this.showSuccessAlert = true)
-        .catch(error => console.log({ error }));
+        .then(response => this.processSuccessResponse(response.data))
+        .catch(error => this.processErrorResponse(error.response))
+        .finally(() => this.showSpinner = false);
+    },
+    processSuccessResponse(message) {
+      this.showErrorAlert = false;
+      this.errorMessage = '';
+
+      this.showSuccessAlert = true;
+      this.successMessage = message;
+    },
+    processErrorResponse(response) {
+      if (response.status === 500) {
+        console.log(response.data);
+        return;
+      }
+
+      if (response.status === 400) {
+        this.showSuccessAlert = false;
+        this.successMessage = '';
+
+        this.showErrorAlert = true;
+        this.errorMessage = response.data;
+      }
     }
   },
   computed: {
@@ -246,7 +292,7 @@ export default {
       return this.$store.getters.isAuthenticated;
     },
     showNoAlert() {
-      return !this.showSuccessAlert;
+      return !this.showSuccessAlert && !this.showErrorAlert;
     }
   }
 };

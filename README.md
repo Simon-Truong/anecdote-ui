@@ -12,9 +12,8 @@ VUE_APP_ENV=
   - grey lighten-3 #EEEEEE
 
 - Font
-  - Heading: grey darken-4 #F5F5F5
-  - Hover: grey darken-3 #424242
-  - Link: blue darken-2 #1976d2
+  - Heading: grey darken-4 #212121
+  - Link: grey darken-1 #757575
 
 - Button
   - Primary: blue darken-2 #1976d2
