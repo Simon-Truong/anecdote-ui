@@ -13,8 +13,18 @@
             tile
             outlined
           >
-            {{ errorMessage }}
-            <a v-if="unverifiedEmail" @click.prevent="resendCode">Resend code</a>
+            <div class="d-flex justify-space-between">
+              <span>
+                {{ errorMessage }}
+              </span>
+
+              <div class="d-inline">
+                <span v-if="showSpinner" class="mr-2">
+                  <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                </span>
+                <a v-if="unverifiedEmail" @click.prevent="resendCode" id="underlined">Resend code</a>
+              </div>
+            </div>
           </v-alert>
 
           <v-alert
@@ -108,15 +118,16 @@ export default {
   name: 'Login',
   data() {
     return {
-      // form
-      isFormValid: false,
-      showPassword: false,
       // alerts
       showErrorAlert: false,
       errorMessage: '',
       showSuccessAlert: false,
       successMessage: '',
       unverifiedEmail: false,
+      // form
+      isFormValid: false,
+      showPassword: false,
+      showSpinner: false,
       email: '',
       password: '',
       rules: {
@@ -151,10 +162,13 @@ export default {
     resendCode() {
       const email = prompt('Enter your email here');
 
+      this.showSpinner = true;
+
       apiClient
         .resendCode({ email })
         .then(response => this.processSuccessResponse(response.data))
-        .catch(error => this.processErrorResponse(error.response));
+        .catch(error => this.processErrorResponse(error.response))
+        .finally(() => this.showSpinner = false);
     },
     processSuccessResponse(message) {
       this.unverifiedEmail = false;
@@ -191,5 +205,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="scss">
+#underlined {
+  &:hover {
+    text-decoration: underline;
+  }
+}
 </style>
