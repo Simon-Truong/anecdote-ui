@@ -14,7 +14,7 @@
             outlined
           >
             {{ errorMessage }}
-            <a @click.prevent="resendCode">Resend code</a>
+            <a v-if="unverifiedEmail" @click.prevent="resendCode">Resend code</a>
           </v-alert>
 
           <v-alert
@@ -157,6 +157,8 @@ export default {
         .catch(error => this.processErrorResponse(error.response));
     },
     processSuccessResponse(message) {
+      this.unverifiedEmail = false;
+
       this.showErrorAlert = false;
       this.errorMessage = '';
 
@@ -164,6 +166,8 @@ export default {
       this.successMessage = message;
     },
     processErrorResponse(response) {
+      this.unverifiedEmail = false;
+
       const status = response.status;
 
       if (status === 500) {
