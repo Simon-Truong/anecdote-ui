@@ -11,6 +11,7 @@
                 <v-row>
                   <v-col cols="3">
                     <v-text-field dense label="Enter your code here" v-model="secretCode"></v-text-field>
+                    <a @click.prevent>Resend Code</a>
                   </v-col>
                 </v-row>
               </v-container>
