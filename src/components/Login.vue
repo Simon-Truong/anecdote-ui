@@ -10,15 +10,23 @@
             dense
             border="left"
             text
+            tile
             outlined
-          >{{ errorMessage }}
-          <v-dialog v-if="unverifiedEmail">
-            <template v-slot:activator="{ on }">
-              <a href="" v-on:click.prevent="on">Resend Code</a>
-            </template>
-
-          </v-dialog>
+          >
+            {{ errorMessage }}
+            <a @click.prevent="resendCode">Resend code</a>
           </v-alert>
+
+          <v-alert
+            v-if="showSuccessAlert"
+            class="mb-0"
+            type="success"
+            dense
+            border="left"
+            text
+            tile
+            outlined
+          >{{ successMessage }}</v-alert>
         </v-col>
       </v-row>
 
@@ -106,6 +114,8 @@ export default {
       // alerts
       showErrorAlert: false,
       errorMessage: '',
+      showSuccessAlert: false,
+      successMessage: '',
       unverifiedEmail: false,
       email: '',
       password: '',
@@ -138,6 +148,21 @@ export default {
         })
         .catch(error => this.processErrorResponse(error.response));
     },
+    resendCode() {
+      const email = prompt('Enter your email here');
+
+      apiClient
+        .resendCode({ email })
+        .then(response => this.processSuccessResponse(response.data))
+        .catch(error => this.processErrorResponse(error.response));
+    },
+    processSuccessResponse(message) {
+      this.showErrorAlert = false;
+      this.errorMessage = '';
+
+      this.showSuccessAlert = true;
+      this.successMessage = message;
+    },
     processErrorResponse(response) {
       const status = response.status;
 
@@ -147,6 +172,9 @@ export default {
       }
 
       if (status === 400 || status === 401) {
+        this.showSuccessAlert = false;
+        this.successMessage = '';
+
         this.showErrorAlert = true;
         this.errorMessage = response.data;
 

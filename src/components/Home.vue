@@ -10,13 +10,22 @@
             dense
             text
             outlined
-          >Sucessfully signed up, please verify your email</v-alert>
+            tile
+          >{{ successMessage }}</v-alert>
         </v-col>
       </v-row>
 
       <v-row class="d-flex justify-center" v-if="showErrorAlert">
         <v-col cols="6">
-          <v-alert class="mb-0" type="error" border="left" dense text outlined>{{ errorMessage }}</v-alert>
+          <v-alert
+            class="mb-0"
+            type="error"
+            border="left"
+            dense
+            text
+            outlined
+            tile
+          >{{ errorMessage }}</v-alert>
         </v-col>
       </v-row>
 

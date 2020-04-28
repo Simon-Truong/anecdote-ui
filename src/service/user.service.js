@@ -16,5 +16,8 @@ export default {
   },
   verify(body) {
     return apiClient.post(`/verify`, body);
+  },
+  resendCode(body) {
+    return apiClient.post(`/resendCode`, body);
   }
 };
