@@ -10,8 +10,8 @@
               <v-container class="pl-0 pb-0">
                 <v-row>
                   <v-col cols="3">
-                    <v-text-field dense label="Enter your code here" v-model="secretCode"></v-text-field>
-                    <a @click.prevent>Resend Code</a>
+                    <v-text-field dense label="Enter your code here" v-on:keyup.enter="verify" v-model="secretCode"></v-text-field>
+                    <a @click.prevent="resendCode">Resend Code</a>
                   </v-col>
                 </v-row>
               </v-container>
@@ -32,13 +32,14 @@ export default {
   name: 'Verify',
   data() {
     return {
-      secretCode: ''
+      secretCode: '',
+      userId: this.$route.params.id
     };
   },
   methods: {
     verify() {
       const body = {
-        userId: this.$route.params.id,
+        userId: this.userId,
         secretCode: this.secretCode
       };
 
@@ -46,6 +47,15 @@ export default {
         .verify(body)
         .then(response => console.log({ response }))
         .catch(error => console.log({ error }));
+    },
+    resendCode() {
+      const body = {
+        userId: this.userId
+      };
+
+      apiClient.resendCode(body)
+        .then(response => console.log({response}))
+        .catch(error => console.log({error}))
     }
   }
 };
