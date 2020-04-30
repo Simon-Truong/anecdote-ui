@@ -242,12 +242,14 @@ export default {
         .finally(() => (this.showSpinner = false));
     },
     processErrorResponse(response) {
-      if (response.status === 500) {
+      const status = response.status; 
+
+      if (status === 500) {
         console.log(response.data);
         return;
       }
 
-      if (response.status === 400) {
+      if (status === 400) {
         alert(response.data);
       }
     }

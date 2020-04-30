@@ -1,45 +1,9 @@
 <template>
   <div>
     <v-container>
-      <v-row class="d-flex justify-center">
-        <v-col cols="3">
-          <v-alert
-            v-if="showErrorAlert"
-            class="mb-0"
-            type="error"
-            dense
-            border="left"
-            text
-            tile
-            outlined
-          >
-            <div class="d-flex justify-space-between">
-              <span>
-                {{ errorMessage }}
-              </span>
-
-              <div class="d-inline">
-                <span v-if="showSpinner" class="mr-2">
-                  <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
-                </span>
-                <a v-if="unverifiedEmail" @click.prevent="resendCode" id="underlined">Resend code</a>
-              </div>
-            </div>
-          </v-alert>
-
-          <v-alert
-            v-if="showSuccessAlert"
-            class="mb-0"
-            type="success"
-            dense
-            border="left"
-            text
-            tile
-            outlined
-          >{{ successMessage }}</v-alert>
-        </v-col>
-      </v-row>
-
+      <!-- <span v-if="showSpinner" class="mr-2">
+        <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+      </span> // TODO implement this --> 
       <v-row>
         <v-col cols="3" />
 
@@ -118,12 +82,6 @@ export default {
   name: 'Login',
   data() {
     return {
-      // alerts
-      showErrorAlert: false,
-      errorMessage: '',
-      showSuccessAlert: false,
-      successMessage: '',
-      unverifiedEmail: false,
       // form
       isFormValid: false,
       showPassword: false,
@@ -171,17 +129,9 @@ export default {
         .finally(() => this.showSpinner = false);
     },
     processSuccessResponse(message) {
-      this.unverifiedEmail = false;
-
-      this.showErrorAlert = false;
-      this.errorMessage = '';
-
-      this.showSuccessAlert = true;
-      this.successMessage = message;
+      alert(message);
     },
     processErrorResponse(response) {
-      this.unverifiedEmail = false;
-
       const status = response.status;
 
       if (status === 500) {
@@ -189,15 +139,15 @@ export default {
         return;
       }
 
-      if (status === 400 || status === 401) {
-        this.showSuccessAlert = false;
-        this.successMessage = '';
+      if (status === 400) {
+        alert(response.data);
+      }
 
-        this.showErrorAlert = true;
-        this.errorMessage = response.data;
+      if (status === 401) {
+        const userResponse = confirm(response.data);
 
-        if (status === 401) {
-          this.unverifiedEmail = true;
+        if (userResponse) {
+          this.resendCode();
         }
       }
     }
@@ -206,9 +156,4 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#underlined {
-  &:hover {
-    text-decoration: underline;
-  }
-}
 </style>
