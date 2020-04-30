@@ -1,35 +1,7 @@
 <template>
   <div>
     <v-container>
-      <v-row class="d-flex justify-center" v-if="showSuccessAlert">
-        <v-col cols="6">
-          <v-alert
-            class="mb-0"
-            type="success"
-            border="left"
-            dense
-            text
-            outlined
-            tile
-          >{{ successMessage }}</v-alert>
-        </v-col>
-      </v-row>
-
-      <v-row class="d-flex justify-center" v-if="showErrorAlert">
-        <v-col cols="6">
-          <v-alert
-            class="mb-0"
-            type="error"
-            border="left"
-            dense
-            text
-            outlined
-            tile
-          >{{ errorMessage }}</v-alert>
-        </v-col>
-      </v-row>
-
-      <v-row v-if="showNoAlert">
+      <v-row>
         <v-col cols="6" />
 
         <v-col cols="6">
@@ -187,11 +159,6 @@ export default {
       isFormValid: false,
       searchQuery: '',
       showPassword: false,
-      // alerts
-      showSuccessAlert: false,
-      successMessage: '',
-      showErrorAlert: false,
-      errorMessage: '',
       // form
       showSpinner: false,
       firstName: '',
@@ -270,16 +237,9 @@ export default {
 
       apiClient
         .signUp(newUser)
-        .then(response => this.processSuccessResponse(response.data))
+        .then(response => alert(response.data))
         .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
-    },
-    processSuccessResponse(message) {
-      this.showErrorAlert = false;
-      this.errorMessage = '';
-
-      this.showSuccessAlert = true;
-      this.successMessage = message;
     },
     processErrorResponse(response) {
       if (response.status === 500) {
@@ -288,20 +248,13 @@ export default {
       }
 
       if (response.status === 400) {
-        this.showSuccessAlert = false;
-        this.successMessage = '';
-
-        this.showErrorAlert = true;
-        this.errorMessage = response.data;
+        alert(response.data);
       }
     }
   },
   computed: {
     isAuthenticated() {
       return this.$store.getters.isAuthenticated;
-    },
-    showNoAlert() {
-      return !this.showSuccessAlert && !this.showErrorAlert;
     }
   }
 };
