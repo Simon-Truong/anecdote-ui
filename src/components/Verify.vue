@@ -54,8 +54,11 @@ export default {
 
       apiClient
         .verify(body)
-        .then(response => console.log({ response }))
-        .catch(error => console.log({ error }));
+        .then(response => {
+          this.processSuccessResponse(response.data);
+          this.$router.push('/login');
+        })
+        .catch(error => this.processErrorResponse(error.response));
     },
     resendCode() {
       const body = {
