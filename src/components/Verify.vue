@@ -10,8 +10,16 @@
               <v-container class="pl-0 pb-0">
                 <v-row>
                   <v-col cols="3">
-                    <v-text-field dense label="Enter your code here" v-on:keyup.enter="verify" v-model="secretCode"></v-text-field>
+                    <v-text-field
+                      dense
+                      label="Enter your code here"
+                      v-on:keyup.enter="verify"
+                      v-model="secretCode"
+                    ></v-text-field>
                     <a @click.prevent="resendCode">Resend Code</a>
+                    <span v-if="showSpinner" class="ml-2">
+                      <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                    </span>
                   </v-col>
                 </v-row>
               </v-container>
@@ -33,6 +41,7 @@ export default {
   data() {
     return {
       secretCode: '',
+      showSpinner: false,
       userId: this.$route.params.id
     };
   },
@@ -53,9 +62,28 @@ export default {
         userId: this.userId
       };
 
-      apiClient.resendCode(body)
-        .then(response => console.log({response}))
-        .catch(error => console.log({error}))
+      this.showSpinner = true;
+
+      apiClient
+        .resendCode(body)
+        .then(response => this.processSuccessResponse(response.data))
+        .catch(error => this.processErrorResponse(error.response))
+        .finally(() => (this.showSpinner = false));
+    },
+    processSuccessResponse(message) {
+      alert(message);
+    },
+    processErrorResponse(response) {
+      const status = response.status;
+
+      if (status === 500) {
+        console.log(response.data);
+        return;
+      }
+
+      if (status === 400) {
+        alert(response.data);
+      }
     }
   }
 };
