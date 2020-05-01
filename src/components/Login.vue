@@ -1,9 +1,6 @@
 <template>
   <div>
     <v-container>
-      <!-- <span v-if="showSpinner" class="mr-2">
-        <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
-      </span> // TODO implement this --> 
       <v-row>
         <v-col cols="3" />
 
@@ -50,17 +47,23 @@
                 <v-col cols="4" />
 
                 <v-col cols="4" class="d-flex justify-space-between">
-                  <router-link to="/" class="custom-anchor caption">Don't have an account? Sign up</router-link>
+                  <router-link to="/" class="custom-anchor caption">Don't have an account?</router-link>
 
-                  <v-btn
-                    tile
-                    depressed
-                    small
-                    dark
-                    color="#1976d2"
-                    :disabled="!isFormValid"
-                    @click="submit"
-                  >Login</v-btn>
+                  <div>
+                    <span v-if="showSpinner" class="mr-2">
+                      <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                    </span>
+
+                    <v-btn
+                      tile
+                      depressed
+                      small
+                      dark
+                      color="#1976d2"
+                      :disabled="!isFormValid"
+                      @click="submit"
+                    >Login</v-btn>
+                  </div>
                 </v-col>
 
                 <v-col cols="4" />
@@ -118,15 +121,13 @@ export default {
         .catch(error => this.processErrorResponse(error.response));
     },
     resendCode() {
-      const email = prompt('Enter your email here');
-
       this.showSpinner = true;
 
       apiClient
-        .resendCode({ email })
+        .resendCode({ email: this.email })
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))
-        .finally(() => this.showSpinner = false);
+        .finally(() => (this.showSpinner = false));
     },
     processSuccessResponse(message) {
       alert(message);
