@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "capital-case": "^1.0.3",
     "core-js": "^3.6.4",
     "node-sass": "^4.13.1",
     "vue": "^2.6.11",

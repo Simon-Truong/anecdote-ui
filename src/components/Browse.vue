@@ -66,6 +66,7 @@
 <script>
 import defaultAvatarColours from '../shared/avatar-default-colours';
 import apiClient from '../service/user.service';
+import { capitalCase } from "capital-case";
 
 export default {
   name: 'Browse',
@@ -109,9 +110,9 @@ export default {
           const users = response.data;
 
           this.items = users.map(user => {
-            user._fullName = `${user.first_name} ${user.surname}`;
+            user._fullName = capitalCase(`${user.first_name} ${user.surname}`);
             user._tags = user.tags.join(', ');
-            user._initials = `${user.first_name[0]}${user.surname[0]}`;
+            user._initials = `${(user.first_name[0] + user.surname[0]).toUpperCase()}`;
             return user;
           });
 
