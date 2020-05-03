@@ -111,7 +111,7 @@ export default {
 
           this.items = users.map(user => {
             user._fullName = capitalCase(`${user.first_name} ${user.surname}`);
-            user._tags = user.tags.join(', ');
+            user._tags = user.tags.map(tag => capitalCase(tag)).join(', ');
             user._initials = `${(user.first_name[0] + user.surname[0]).toUpperCase()}`;
             return user;
           });

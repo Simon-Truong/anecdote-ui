@@ -53,6 +53,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken) {
+    store.commit('login');
+  }
+
   if (to.redirectedFrom === '/logout') {
     localStorage.removeItem('accessToken');
     store.commit('logout');
