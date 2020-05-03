@@ -46,14 +46,30 @@
               <v-row>
                 <v-col cols="4" />
 
-                <v-col cols="4" class="d-flex justify-space-between">
-                  <router-link to="/" class="custom-anchor caption">Don't have an account?</router-link>
+                <v-col cols="4" class="d-flex justify-space-between py-0">
+                  <router-link to="/" class="custom-anchor caption">Forgot password?</router-link>
+                </v-col>
 
+                <v-col cols="4" />
+              </v-row>
+
+              <v-row>
+                <v-col cols="4" />
+
+                <v-col cols="4" class="d-flex justify-space-between pt-0">
                   <div>
-                    <span v-if="showSpinner" class="mr-2">
-                      <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
-                    </span>
+                    <router-link to="/" class="custom-anchor caption">Don't have an account?</router-link>
+                  </div>
+                </v-col>
 
+                <v-col cols="4" />
+              </v-row>
+
+              <v-row>
+                <v-col cols="4" />
+
+                <v-col cols="4" class="d-flex justify-space-between pt-0">
+                  <div>
                     <v-btn
                       tile
                       depressed
@@ -63,6 +79,9 @@
                       :disabled="!isFormValid"
                       @click="submit"
                     >Login</v-btn>
+                    <span v-if="showSpinner" class="ml-2">
+                      <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                    </span>
                   </div>
                 </v-col>
 

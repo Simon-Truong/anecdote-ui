@@ -23,12 +23,12 @@
           </v-row>
         </v-col>
 
-        <v-col cols="3">
+        <v-col cols="3" v-if="!isAuthenticated">
           <fieldset>
             <legend>
               <em>Sign up</em>
             </legend>
-            <v-form v-if="!isAuthenticated" v-model="isFormValid" ref="form">
+            <v-form v-model="isFormValid" ref="form">
               <v-container class="pt-0">
                 <v-row>
                   <v-col cols="6">
@@ -137,10 +137,7 @@
                 </v-row>
 
                 <v-row>
-                  <v-col cols="12" class="d-flex justify-end">
-                    <span v-if="showSpinner" class="d-flex align-center mr-2">
-                      <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
-                    </span>
+                  <v-col cols="12" class="d-flex justify-start">
                     <v-btn
                       tile
                       depressed
@@ -150,6 +147,9 @@
                       @click="submit"
                       color="#1976d2"
                     >Sign up</v-btn>
+                    <span v-if="showSpinner" class="d-flex align-center ml-2">
+                      <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                    </span>
                   </v-col>
                 </v-row>
               </v-container>
