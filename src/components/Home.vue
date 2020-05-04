@@ -218,7 +218,7 @@ export default {
         },
         confirmPassword: value => {
           if (value !== this.password) {
-            return 'Must match with Password'
+            return 'Must match with Password';
           }
 
           return true;
@@ -267,7 +267,7 @@ export default {
       this.$router.push('/login');
     },
     processErrorResponse(response) {
-      const status = response.status; 
+      const status = response.status;
 
       if (status === 500) {
         console.log(response.data);
