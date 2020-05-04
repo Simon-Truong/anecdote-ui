@@ -16,7 +16,7 @@
                       v-on:keyup.enter="verify"
                       v-model="secretCode"
                     ></v-text-field>
-                    <a @click.prevent="resendCode">Resend Code</a>
+                    <a class="custom-anchor" @click.prevent="resendCode">Resend Code</a>
                     <span v-if="showSpinner" class="ml-2">
                       <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
                     </span>

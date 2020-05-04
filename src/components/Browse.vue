@@ -39,7 +39,7 @@
             </template>
 
             <template v-slot:item._fullName="{ item }">
-              <router-link to="/profile" class="custom-anchor font-weight-bold">{{ item._fullName }}</router-link>
+              <router-link to="/profile" class="custom-routerlink font-weight-bold">{{ item._fullName }}</router-link>
             </template>
             <!-- //TODO: profile -->
 

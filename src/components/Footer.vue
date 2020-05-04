@@ -9,7 +9,7 @@
             <router-link
               v-if="isAuthenticated"
               to="/feedback"
-              class="custom-anchor body-2"
+              class="custom-routerlink body-2"
             >Feedback?</router-link>
           </v-col>
 

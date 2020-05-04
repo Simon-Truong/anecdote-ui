@@ -47,7 +47,7 @@
                 <v-col cols="4" />
 
                 <v-col cols="4" class="d-flex justify-space-between py-0">
-                  <router-link to="/" class="custom-anchor caption">Forgot password?</router-link>
+                  <a to="/" class="custom-anchor">Forgot password?</a>
                 </v-col>
 
                 <v-col cols="4" />
@@ -58,7 +58,7 @@
 
                 <v-col cols="4" class="d-flex justify-space-between pt-0">
                   <div>
-                    <router-link to="/" class="custom-anchor caption">Don't have an account?</router-link>
+                    <router-link to="/" class="custom-anchor">Don't have an account?</router-link>
                   </div>
                 </v-col>
 

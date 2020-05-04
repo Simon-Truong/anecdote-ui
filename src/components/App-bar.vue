@@ -7,7 +7,7 @@
 
           <v-col cols="3">
             <v-toolbar-title>
-              <router-link to="./" class="custom-anchor main-heading">
+              <router-link to="./" class="custom-routerlink main-heading">
                 <span class="grey--text text--darken-4">anecdote</span>
               </router-link>
             </v-toolbar-title>
@@ -19,13 +19,13 @@
                 <ul>
                   <div v-if="!isAuthenticated">
                     <li v-for="route in guestRoutes" :key="route.label">
-                      <router-link :to="route.link" class="custom-anchor">{{ route.label }}</router-link>
+                      <router-link :to="route.link" class="custom-routerlink">{{ route.label }}</router-link>
                     </li>
                   </div>
 
                   <div v-if="isAuthenticated">
                     <li v-for="route in authenticatedRoutes" :key="route.label">
-                      <router-link :to="route.link" class="custom-anchor">{{ route.label }}</router-link>
+                      <router-link :to="route.link" class="custom-routerlink">{{ route.label }}</router-link>
                     </li>
                   </div>
                 </ul>

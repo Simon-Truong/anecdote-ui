@@ -35,7 +35,7 @@ export default {
     font-family: 'Roboto', monospace;
   }
 
-  .custom-anchor {
+  .custom-routerlink {
     text-decoration: none;
     cursor: pointer;
     color: $grey-darken-1;
@@ -48,6 +48,11 @@ export default {
       color: $primary;
       transition-duration: 0.5s;
     }
+  }
+
+  .custom-anchor {
+    color: #1976d2;
+    font-size: 0.75rem;
   }
 
   .v-text-field.v-input--dense {
