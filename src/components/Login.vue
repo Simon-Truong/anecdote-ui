@@ -47,7 +47,10 @@
                 <v-col cols="4" />
 
                 <v-col cols="4" class="d-flex justify-space-between py-0">
-                  <a to="/" class="custom-anchor">Forgot password?</a>
+                  <a
+                    @click.prevent="resetPassword"
+                    class="custom-anchor"
+                  >Forgot password?</a>
                 </v-col>
 
                 <v-col cols="4" />
@@ -146,6 +149,17 @@ export default {
         .resendCode({ email: this.email })
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))
+        .finally(() => (this.showSpinner = false));
+    },
+    resetPassword() {
+      const email = prompt('Enter your email:');
+
+      this.showSpinner = true;
+
+      apiClient
+        .resetPassword({ email })
+        .then(response => console.log({ response }))
+        .catch(error => console.log({ error }))
         .finally(() => (this.showSpinner = false));
     },
     processSuccessResponse(message) {
