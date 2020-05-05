@@ -72,6 +72,10 @@ export default {
     background-color: $background-color;
   }
 
+  .no-decoration {
+    text-decoration: none;
+  }
+
   .v-btn.v-btn--depressed.v-btn--disabled.v-btn--tile.theme--dark.v-size--small {
     background-color: $primary-disabled !important;
 

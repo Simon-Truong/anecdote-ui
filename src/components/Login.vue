@@ -61,7 +61,7 @@
 
                 <v-col cols="4" class="d-flex justify-space-between pt-0">
                   <div>
-                    <router-link to="/" class="custom-anchor">Don't have an account?</router-link>
+                    <router-link to="/" class="custom-anchor no-decoration">Don't have an account?</router-link>
                   </div>
                 </v-col>
 
