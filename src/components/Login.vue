@@ -154,6 +154,10 @@ export default {
     resetPassword() {
       const email = prompt('Enter your email:');
 
+      if (!email) {
+        return;
+      }
+
       this.showSpinner = true;
 
       apiClient
