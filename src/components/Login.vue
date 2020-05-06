@@ -158,8 +158,8 @@ export default {
 
       apiClient
         .resetPassword({ email })
-        .then(response => console.log({ response }))
-        .catch(error => console.log({ error }))
+        .then(response => this.processSuccessResponse(response.data))
+        .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
     },
     processSuccessResponse(message) {
