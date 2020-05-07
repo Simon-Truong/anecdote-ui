@@ -22,5 +22,8 @@ export default {
   },
   requestResetPassword(body) {
     return apiClient.post(`/requestResetPassword`, body);
+  },
+  resetPassword(body) {
+    return apiClient.post(`/resetPassword`, body)
   }
 };

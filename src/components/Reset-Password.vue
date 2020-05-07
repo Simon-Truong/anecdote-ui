@@ -41,6 +41,9 @@
                 </v-container>
 
                 <v-btn tile depressed small dark color="#1976d2" @click="resetPassword" :disabled="!isFormValid">Reset Password</v-btn>
+                <span v-if="showSpinner" class="ml-2">
+                    <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                </span>
                 </v-card-text>
             </v-card>
             </v-col>
@@ -52,6 +55,7 @@
 
 <script>
 import rulesMixins from '../mixins/rules.mixins';
+import apiClient from '../service/user.service';
 
 export default {
     name: 'ResetPassword',
@@ -61,11 +65,22 @@ export default {
             confirmPassword: '',
             showPassword: false,
             isFormValid: false,
+            showSpinner: false
         }
     },
     methods: {
         resetPassword() {
-            return; // TODO
+            this.showSpinner = true;
+
+            const body = {
+                password: this.password,
+                confirmPassword: this.confirmPassword
+            }
+
+            apiClient.resetPassword(body)
+                .then(response => console.log({response}))
+                .catch(error => console.log({error}))
+                .finally(() => this.showSpinner = false);
         }
     }
 }
