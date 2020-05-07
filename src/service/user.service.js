@@ -20,7 +20,7 @@ export default {
   resendCode(body) {
     return apiClient.post(`/resendCode`, body);
   },
-  resetPassword(body) {
-    return apiClient.post(`/resetPassword`, body);
+  requestResetPassword(body) {
+    return apiClient.post(`/requestResetPassword`, body);
   }
 };

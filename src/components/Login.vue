@@ -48,7 +48,7 @@
 
                 <v-col cols="4" class="d-flex justify-space-between py-0">
                   <a
-                    @click.prevent="resetPassword"
+                    @click.prevent="requestResetPassword"
                     class="custom-anchor"
                   >Forgot password?</a>
                 </v-col>
@@ -151,7 +151,7 @@ export default {
         .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
     },
-    resetPassword() {
+    requestResetPassword() {
       const email = prompt('Enter your email:');
 
       if (!email) {
@@ -161,7 +161,7 @@ export default {
       this.showSpinner = true;
 
       apiClient
-        .resetPassword({ email })
+        .requestResetPassword({ email })
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
