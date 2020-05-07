@@ -16,7 +16,7 @@
                 autofocus
                 validate-on-blur
                 @click:append="search"
-                @keydown.enter="search"
+                @keyup.enter="search"
                 v-model="searchQuery"
               ></v-text-field>
             </v-col>
@@ -38,7 +38,7 @@
                       label="First Name"
                       v-model="firstName"
                       :rules="[rules.required]"
-                      @keydown.enter="submit"
+                      @keyup.enter="submit"
                     ></v-text-field>
                   </v-col>
 
@@ -49,7 +49,7 @@
                       label="Surname"
                       v-model="surname"
                       :rules="[rules.required]"
-                      @keydown.enter="submit"
+                      @keyup.enter="submit"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -62,7 +62,7 @@
                       label="Email"
                       v-model="email"
                       :rules="[rules.required, rules.email]"
-                      @keydown.enter="submit"
+                      @keyup.enter="submit"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -79,7 +79,7 @@
                       counter
                       @click:append="showPassword = !showPassword"
                       :rules="[rules.required, rules.minimumLength, rules.password]"
-                      @keydown.enter="submit"
+                      @keyup.enter="submit"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -94,7 +94,7 @@
                       counter
                       :rules="[rules.required, rules.confirmPassword]"
                       type="password"
-                      @keydown.enter="submit"
+                      @keyup.enter="submit"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -163,9 +163,11 @@
 
 <script>
 import apiClient from '../service/user.service';
+import rulesMixins from '../mixins/rules.mixins';
 
 export default {
   name: 'Home',
+  mixins: [rulesMixins],
   data() {
     return {
       isFormValid: false,
@@ -176,54 +178,10 @@ export default {
       firstName: '',
       surname: '',
       email: '',
-      password: '',
       confirmPassword: '',
       items: ['Chef', 'Doctor', 'Rock Climbing'],
       tags: [],
       searchInput: '',
-      rules: {
-        required: value => !!value || 'Required',
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(value) || 'Invalid e-mail';
-        },
-        minimumLength: value => value.length >= 8 || 'Password must be at least 8 characters long',
-        password: value => {
-          const upperCasePattern = /[A-Z]/;
-          const lowerCasePattern = /[a-z]/;
-          const numberPattern = /[0-9]/;
-          const specialCharacterPattern = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/;
-
-          if (!upperCasePattern.test(value)) {
-            return 'Password must contain one uppercase word';
-          }
-
-          if (!lowerCasePattern.test(value)) {
-            return 'Password must contain one lowercase word';
-          }
-
-          if (!numberPattern.test(value)) {
-            return 'Password must contain one number';
-          }
-
-          if (!specialCharacterPattern.test(value)) {
-            return 'Password must contain one special character';
-          }
-
-          if (value.includes(this.firstName) || value.includes(this.surname) || value.includes(this.email)) {
-            return 'Password must not contain first name, surname or email';
-          }
-
-          return true;
-        },
-        confirmPassword: value => {
-          if (value !== this.password) {
-            return 'Must match with Password';
-          }
-
-          return true;
-        }
-      }
     };
   },
   methods: {
