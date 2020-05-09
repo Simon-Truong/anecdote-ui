@@ -35,9 +35,11 @@
 
 <script>
 import apiClient from '../service/user.service';
+import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
   name: 'Verify',
+  mixins: [responseHandlerMixins],
   data() {
     return {
       secretCode: '',
@@ -72,21 +74,6 @@ export default {
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
-    },
-    processSuccessResponse(message) {
-      alert(message);
-    },
-    processErrorResponse(response) {
-      const status = response.status;
-
-      if (status === 500) {
-        console.log(response.data);
-        return;
-      }
-
-      if (status === 400) {
-        alert(response.data);
-      }
     }
   }
 };

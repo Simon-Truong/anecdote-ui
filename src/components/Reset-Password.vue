@@ -78,11 +78,12 @@
 
 <script>
 import rulesMixins from '../mixins/rules.mixins';
+import responseHandlerMixins from '../mixins/response-handler.mixins';
 import apiClient from '../service/user.service';
 
 export default {
   name: 'ResetPassword',
-  mixins: [rulesMixins],
+  mixins: [rulesMixins, responseHandlerMixins],
   data() {
     return {
       confirmPassword: '',
@@ -116,21 +117,6 @@ export default {
         })
         .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
-    },
-    processSuccessResponse(message) {
-      alert(message);
-    },
-    processErrorResponse(response) {
-      const status = response.status;
-
-      if (status === 500) {
-        console.log(response.data);
-        return;
-      }
-
-      if (status === 400) {
-        alert(response.data);
-      }
     }
   }
 };

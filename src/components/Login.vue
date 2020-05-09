@@ -47,10 +47,7 @@
                 <v-col cols="4" />
 
                 <v-col cols="4" class="d-flex justify-space-between py-0">
-                  <a
-                    @click.prevent="requestResetPassword"
-                    class="custom-anchor"
-                  >Forgot password?</a>
+                  <a @click.prevent="requestResetPassword" class="custom-anchor">Forgot password?</a>
                 </v-col>
 
                 <v-col cols="4" />
@@ -102,9 +99,11 @@
 
 <script>
 import apiClient from '../service/user.service';
+import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
   name: 'Login',
+  mixins: [responseHandlerMixins],
   data() {
     return {
       // form
@@ -140,7 +139,17 @@ export default {
           this.$store.commit('login');
           this.$router.push('/browse');
         })
-        .catch(error => this.processErrorResponse(error.response));
+        .catch(error => {
+          if (error.response.status === 401) {
+            const userResponse = confirm(error.response.data);
+
+            if (userResponse) {
+              this.resendCode();
+            }
+          }
+
+          this.processErrorResponse(error.response);
+        });
     },
     resendCode() {
       this.showSpinner = true;
@@ -165,29 +174,6 @@ export default {
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
-    },
-    processSuccessResponse(message) {
-      alert(message);
-    },
-    processErrorResponse(response) {
-      const status = response.status;
-
-      if (status === 500) {
-        console.log(response.data);
-        return;
-      }
-
-      if (status === 400) {
-        alert(response.data);
-      }
-
-      if (status === 401) {
-        const userResponse = confirm(response.data);
-
-        if (userResponse) {
-          this.resendCode();
-        }
-      }
     }
   }
 };

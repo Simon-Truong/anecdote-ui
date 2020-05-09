@@ -164,10 +164,11 @@
 <script>
 import apiClient from '../service/user.service';
 import rulesMixins from '../mixins/rules.mixins';
+import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
   name: 'Home',
-  mixins: [rulesMixins],
+  mixins: [rulesMixins, responseHandlerMixins],
   data() {
     return {
       isFormValid: false,
@@ -181,7 +182,7 @@ export default {
       confirmPassword: '',
       items: ['Chef', 'Doctor', 'Rock Climbing'],
       tags: [],
-      searchInput: '',
+      searchInput: ''
     };
   },
   methods: {
@@ -216,25 +217,12 @@ export default {
 
       apiClient
         .signUp(newUser)
-        .then(response => this.processSuccessResponse(response.data))
+        .then(response => {
+          this.processSuccessResponse(response.data);
+          this.$router.push('/login');
+        })
         .catch(error => this.processErrorResponse(error.response))
         .finally(() => (this.showSpinner = false));
-    },
-    processSuccessResponse(message) {
-      alert(message);
-      this.$router.push('/login');
-    },
-    processErrorResponse(response) {
-      const status = response.status;
-
-      if (status === 500) {
-        console.log(response.data);
-        return;
-      }
-
-      if (status === 400) {
-        alert(response.data);
-      }
     }
   },
   computed: {
