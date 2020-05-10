@@ -6,6 +6,7 @@ import Login from '../components/Login';
 import Browse from '../components/Browse';
 import Verify from '../components/Verify';
 import ResetPassword from '../components/Reset-Password';
+import Schedule from '../components/Schedule';
 import store from '../store/store';
 
 Vue.use(VueRouter);
@@ -42,13 +43,18 @@ const routes = [
     component: ResetPassword
   },
   {
+    path: '/schedule/:id',
+    name: 'schedule',
+    component: Schedule
+  },
+  {
     path: '/logout',
     name: 'logout',
     redirect: '/'
   },
   {
     path: '/*',
-    name: 'non-existant',
+    name: 'non-existent',
     redirect: '/'
   }
 ];

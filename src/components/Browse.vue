@@ -47,12 +47,11 @@
               <span class="custom-table-data">{{ item._tags }}</span>
             </template>
 
-            <template v-slot:item.actions>
+            <template v-slot:item.actions="{ item }">
               <div class="d-flex justify-center">
-                <v-btn class="mr-2" icon>
+                <v-btn @click="navigateToSchedule(item.id)" class="mr-2" icon>
                   <v-icon>fa-calendar-alt</v-icon>
                 </v-btn>
-                <!-- //TODO: schedule -->
                 <v-btn icon>
                   <v-icon>fa-comment</v-icon>
                 </v-btn>
@@ -127,6 +126,14 @@ export default {
     getRandomAvatarColour() {
       const randomIndex = Math.floor(Math.random() * 10);
       return defaultAvatarColours[randomIndex];
+    },
+    navigateToSchedule(id) {
+      this.$router.push({
+        name: 'schedule',
+        params: {
+          id  
+        }
+      });
     }
   },
   created() {
