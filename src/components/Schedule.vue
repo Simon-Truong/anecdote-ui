@@ -1,15 +1,22 @@
 <template>
   <div>
-      <h1>testing</h1>
+    <v-row justify="center">
+        <v-date-picker v-model="picker"></v-date-picker>
+    </v-row>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'Schedule'
+    name: 'Schedule',
+    data() {
+        return {
+            picker: new Date().toISOString().substr(0, 10)
+        }
+    }
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 
 </style>
