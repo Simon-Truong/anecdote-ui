@@ -49,9 +49,13 @@
 
             <template v-slot:item.actions>
               <div class="d-flex justify-center">
-                <v-btn tile depressed small dark color="#1976d2" class="mr-2">Schedule</v-btn>
+                <v-btn class="mr-2" icon>
+                  <v-icon>fa-calendar-alt</v-icon>
+                </v-btn>
                 <!-- //TODO: schedule -->
-                <v-btn tile depressed small dark color="#1976d2">Message</v-btn>
+                <v-btn icon>
+                  <v-icon>fa-comment</v-icon>
+                </v-btn>
                 <!-- //TODO: message -->
               </div>
             </template>
@@ -66,7 +70,7 @@
 <script>
 import defaultAvatarColours from '../shared/avatar-default-colours';
 import apiClient from '../service/user.service';
-import { capitalCase } from "capital-case";
+import { capitalCase } from 'capital-case';
 
 export default {
   name: 'Browse',
