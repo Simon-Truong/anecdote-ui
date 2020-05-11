@@ -39,7 +39,10 @@
             </template>
 
             <template v-slot:item._fullName="{ item }">
-              <router-link to="/profile" class="custom-routerlink font-weight-bold">{{ item._fullName }}</router-link>
+              <router-link
+                to="/profile"
+                class="custom-routerlink font-weight-bold"
+              >{{ item._fullName }}</router-link>
             </template>
             <!-- //TODO: profile -->
 
@@ -47,14 +50,17 @@
               <span class="custom-table-data">{{ item._tags }}</span>
             </template>
 
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions>
               <div class="d-flex justify-center">
-                <v-btn @click="navigateToSchedule(item.id)" class="mr-2" icon>
-                  <v-icon>fa-calendar-alt</v-icon>
-                </v-btn>
-                <v-btn icon>
-                  <v-icon>fa-comment</v-icon>
-                </v-btn>
+                <v-menu v-model="menu" :close-on-content-click="false" offset-x>
+                  <template v-slot:activator="{ on }">
+                    <v-btn class="mr-2" tile depressed small dark color="#1976d2" v-on="on">Schedule</v-btn>
+                  </template>
+
+                  <v-date-picker v-model="picker" color="grey"></v-date-picker>
+                </v-menu>
+
+                <v-btn tile depressed small dark color="#1976d2" v-on="on">Message</v-btn>
                 <!-- //TODO: message -->
               </div>
             </template>
@@ -77,6 +83,7 @@ export default {
     return {
       query: null,
       isLoading: true,
+      picker: new Date().toISOString().substr(0, 10),
       // grid
       headers: [
         {
@@ -131,7 +138,7 @@ export default {
       this.$router.push({
         name: 'schedule',
         params: {
-          id  
+          id
         }
       });
     }
