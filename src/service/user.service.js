@@ -8,6 +8,9 @@ export default {
   getUsers(query = '') {
     return apiClient.get(`/users?q=${query}`);
   },
+  getUserById(userId) {
+    return apiClient.get(`/user/${userId}`);
+  },
   signUp(newUser) {
     return apiClient.post(`/signup`, newUser);
   },

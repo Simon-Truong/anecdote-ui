@@ -57,7 +57,7 @@
                     <v-btn class="mr-2" tile depressed small dark color="#1976d2" v-on="on">Schedule</v-btn>
                   </template>
 
-                  <v-date-picker v-model="picker" no-title event-color="green lighten-1" :events="events" @change="navigateToSchedule(item.id)"></v-date-picker>
+                  <v-date-picker color="primary" v-model="picker" no-title :events="events" @change="navigateToSchedule(item.id)"></v-date-picker>
                 </v-menu>
 
                 <v-btn tile depressed small dark color="#1976d2">Message</v-btn>

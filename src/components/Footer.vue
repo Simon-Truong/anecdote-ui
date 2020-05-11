@@ -1,5 +1,5 @@
 <template>
-  <div v-if="['verify', 'resetPassword'].indexOf($route.name) === -1">
+  <div v-if="['verify', 'resetPassword', 'schedule'].indexOf($route.name) === -1">
     <v-footer color="white" padless>
       <v-container>
         <v-row>
