@@ -50,17 +50,17 @@
               <span class="custom-table-data">{{ item._tags }}</span>
             </template>
 
-            <template v-slot:item.actions>
+            <template v-slot:item.actions="{ item }">
               <div class="d-flex justify-center">
                 <v-menu v-model="menu" :close-on-content-click="false" offset-x>
                   <template v-slot:activator="{ on }">
                     <v-btn class="mr-2" tile depressed small dark color="#1976d2" v-on="on">Schedule</v-btn>
                   </template>
 
-                  <v-date-picker v-model="picker" no-title></v-date-picker>
+                  <v-date-picker v-model="picker" no-title event-color="green lighten-1" :events="events" @change="navigateToSchedule(item.id)"></v-date-picker>
                 </v-menu>
 
-                <v-btn tile depressed small dark color="#1976d2" v-on="on">Message</v-btn>
+                <v-btn tile depressed small dark color="#1976d2">Message</v-btn>
                 <!-- //TODO: message -->
               </div>
             </template>
@@ -83,7 +83,10 @@ export default {
     return {
       query: null,
       isLoading: true,
+      // date picker
+      menu: false,
       picker: new Date().toISOString().substr(0, 10),
+      events: [(new Date()).toISOString().substring(0, 10)], // TODO
       // grid
       headers: [
         {
@@ -139,6 +142,9 @@ export default {
         name: 'schedule',
         params: {
           id
+        },
+        query: {
+          d: this.picker  
         }
       });
     }
