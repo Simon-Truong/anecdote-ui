@@ -57,7 +57,7 @@
                     <v-btn class="mr-2" tile depressed small dark color="#1976d2" v-on="on">Schedule</v-btn>
                   </template>
 
-                  <v-date-picker v-model="picker" color="grey"></v-date-picker>
+                  <v-date-picker v-model="picker" no-title></v-date-picker>
                 </v-menu>
 
                 <v-btn tile depressed small dark color="#1976d2" v-on="on">Message</v-btn>
