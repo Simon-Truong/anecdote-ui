@@ -2,6 +2,12 @@
   <div class="vh-100">
     <v-row>
       <v-col>
+        <v-date-picker color="primary" v-model="picker" no-title :events="events"></v-date-picker>
+      </v-col>
+    </v-row>
+
+    <v-row>
+      <v-col>
         <v-sheet height="400">
           <v-calendar
             ref="calendar"
@@ -24,16 +30,20 @@ export default {
   name: 'Schedule',
   data() {
     return {
-      selectedDate: this.$route.query.d,
+      // date picker
+      picker: new Date().toISOString().substr(0, 10),
+      // events: [new Date().toISOString().substring(0, 10)], // TODO
+      selectedDate: new Date().toISOString().substr(0, 10),
       selectedUserId: this.$route.params.id,
       selectedUser: null
     };
   },
   methods: {
     getUser() {
-      apiClient.getUserById(this.selectedUserId)
-        .then(response => this.selectedUser = response)
-        .catch(error => console.log({error}))
+      apiClient
+        .getUserById(this.selectedUserId)
+        .then(response => (this.selectedUser = response))
+        .catch(error => console.log({ error }));
     }
   },
   created() {

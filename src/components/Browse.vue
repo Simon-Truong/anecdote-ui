@@ -52,13 +52,15 @@
 
             <template v-slot:item.actions="{ item }">
               <div class="d-flex justify-center">
-                <v-menu v-model="menu" :close-on-content-click="false" offset-x>
-                  <template v-slot:activator="{ on }">
-                    <v-btn class="mr-2" tile depressed small dark color="#1976d2" v-on="on">Schedule</v-btn>
-                  </template>
-
-                  <v-date-picker color="primary" v-model="picker" no-title :events="events" @change="navigateToSchedule(item.id)"></v-date-picker>
-                </v-menu>
+                <v-btn
+                  class="mr-2"
+                  tile
+                  depressed
+                  small
+                  dark
+                  color="#1976d2"
+                  @click="navigateToSchedule(item.id)"
+                >Schedule</v-btn>
 
                 <v-btn tile depressed small dark color="#1976d2">Message</v-btn>
                 <!-- //TODO: message -->
@@ -83,10 +85,7 @@ export default {
     return {
       query: null,
       isLoading: true,
-      // date picker
-      menu: false,
-      picker: new Date().toISOString().substr(0, 10),
-      events: [(new Date()).toISOString().substring(0, 10)], // TODO
+
       // grid
       headers: [
         {
@@ -142,9 +141,6 @@ export default {
         name: 'schedule',
         params: {
           id
-        },
-        query: {
-          d: this.picker  
         }
       });
     }
