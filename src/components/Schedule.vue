@@ -1,9 +1,9 @@
 <template>
-  <div class="vh-100">
+  <div>
     <v-container>
       <v-row>
-        <v-col cols="6">
-          <v-card tile flat>
+        <v-col cols="2">
+          <v-card class="mb-4" tile flat>
             <v-list-item three-line>
               <v-list-item-content>
                 <div class="overline">USER</div>
@@ -16,18 +16,14 @@
                 tile
                 size="60"
                 :color="getRandomAvatarColour()"
-              > {{ initials }}</v-list-item-avatar>
+              >{{ initials }}</v-list-item-avatar>
             </v-list-item>
           </v-card>
+
+          <v-date-picker color="primary" v-model="picker" no-title :events="events" flat></v-date-picker>
         </v-col>
 
-        <v-col cols="6">
-          <v-date-picker color="primary" v-model="picker" no-title :events="events"></v-date-picker>
-        </v-col>
-      </v-row>
-
-      <v-row>
-        <v-col>
+        <v-col cols="10">
           <v-sheet height="400">
             <v-calendar
               ref="calendar"
@@ -90,8 +86,6 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-.vh-100 {
-  height: 100%;
-}
+<style lang="scss">
+
 </style>
