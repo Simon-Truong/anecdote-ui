@@ -52,15 +52,13 @@
 
             <template v-slot:item.actions="{ item }">
               <div class="d-flex justify-center">
-                <v-btn
-                  class="mr-2"
-                  icon
-                  @click="navigateToSchedule(item.id)"
-                >
-                  <v-icon> fas fa-calendar-day</v-icon>
+                <v-btn class="mr-2" icon @click="navigateToSchedule(item.id)">
+                  <v-icon>fas fa-calendar-day</v-icon>
                 </v-btn>
 
-                <v-btn icon><v-icon>fas fa-comments</v-icon></v-btn>
+                <v-btn icon>
+                  <v-icon>fas fa-comments</v-icon>
+                </v-btn>
                 <!-- //TODO: message -->
               </div>
             </template>

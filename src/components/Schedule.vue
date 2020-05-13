@@ -6,7 +6,6 @@
           <v-card class="mb-4" tile flat>
             <v-list-item three-line>
               <v-list-item-content>
-                <div class="overline">USER</div>
                 <v-list-item-title class="headline mb-1">{{ fullName }}</v-list-item-title>
                 <v-list-item-subtitle>{{ tags }}</v-list-item-subtitle>
               </v-list-item-content>
@@ -14,22 +13,22 @@
               <v-list-item-avatar
                 class="white--text"
                 tile
-                size="60"
+                size="40"
                 :color="getRandomAvatarColour()"
               >{{ initials }}</v-list-item-avatar>
             </v-list-item>
           </v-card>
 
-          <v-date-picker color="primary" v-model="picker" no-title :events="events" flat></v-date-picker>
+          <v-date-picker color="primary" v-model="picker" no-title :events="events"></v-date-picker>
         </v-col>
 
         <v-col cols="10">
           <v-sheet height="400">
-            <v-calendar
+            <v-calendar class="test"
               ref="calendar"
-              :now="selectedDate"
-              :value="selectedDate"
-              :events="events"
+              :value="picker"
+              :now="picker"
+              :events="calendarEvents"
               color="primary"
               type="week"
             ></v-calendar>
@@ -51,8 +50,14 @@ export default {
     return {
       // date picker
       picker: new Date().toISOString().substr(0, 10),
-      // events: [new Date().toISOString().substring(0, 10)], // TODO
-      selectedDate: new Date().toISOString().substr(0, 10),
+      events: [new Date().toISOString().substring(0, 10)],
+      calendarEvents: [
+        {
+          name: 'Weekly Meeting',
+          start: '2020-05-14 09:00',
+          end: '2020-05-14 10:00'
+        }
+      ],
       selectedUserId: this.$route.params.id,
       selectedUser: null
     };
@@ -82,10 +87,21 @@ export default {
   },
   created() {
     this.getUser();
+  },
+  mounted() {
+    this.$refs.calendar.scrollToTime('08:00');
   }
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+.v-picker.v-card {
+  box-shadow: none;
+  border-radius: 0;
+}
 
+::v-deep .v-calendar-daily_head-day-label .v-btn--fab.v-size--default {
+  height: 2rem;
+  width: 2rem;
+}
 </style>
