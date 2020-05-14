@@ -23,16 +23,24 @@
         </v-col>
 
         <v-col cols="10">
-          <v-sheet height="400">
-            <v-calendar class="test"
-              ref="calendar"
-              :value="picker"
-              :now="picker"
-              :events="calendarEvents"
-              color="primary"
-              type="week"
-            ></v-calendar>
-          </v-sheet>
+          <VueCal
+            ref="vuecal"
+            style="height: 70%;"
+            hide-view-selector
+            today-button
+            active-view="week"
+            :time-from="8 * 60"
+            :time-to="22 * 60"
+            :disable-views="['years', 'year', 'month', 'day']"
+            :events="calendarEvents"
+            :cell-click-hold="false"
+            editable-events
+            @cell-dblclick="$refs.vuecal.createEvent(
+              $event,
+              120,
+              { title: `Session with ${fullName}`, class: 'blue-event' }
+            )"
+          ></VueCal>
         </v-col>
       </v-row>
     </v-container>
@@ -43,8 +51,11 @@
 import apiClient from '../service/user.service';
 import { capitalCase } from 'capital-case';
 import defaultAvatarColours from '../shared/avatar-default-colours';
+import VueCal from 'vue-cal';
+import 'vue-cal/dist/vuecal.css';
 
 export default {
+  components: { VueCal },
   name: 'Schedule',
   data() {
     return {
@@ -53,9 +64,14 @@ export default {
       events: [new Date().toISOString().substring(0, 10)],
       calendarEvents: [
         {
-          name: 'Weekly Meeting',
-          start: '2020-05-14 09:00',
-          end: '2020-05-14 10:00'
+          start: '2020-05-15 10:00',
+          end: '2020-05-15 11:00',
+          // You can also define event dates with Javascript Date objects:
+          // start: new Date(2018, 11 - 1, 16, 10, 30),
+          // end: new Date(2018, 11 - 1, 16, 11, 30),
+          title: 'Session with Andrew',
+          content: '',
+          class: 'health'
         }
       ],
       selectedUserId: this.$route.params.id,
@@ -103,5 +119,9 @@ export default {
 ::v-deep .v-calendar-daily_head-day-label .v-btn--fab.v-size--default {
   height: 2rem;
   width: 2rem;
+}
+
+.vuecal, .vuecal__title-bar {
+  background-color: white;
 }
 </style>
