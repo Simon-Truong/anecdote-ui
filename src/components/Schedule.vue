@@ -24,10 +24,10 @@
 
         <v-col cols="10">
           <VueCal
+            class="white-title"
             ref="vuecal"
             style="height: 70%;"
             hide-view-selector
-            today-button
             active-view="week"
             :time-from="8 * 60"
             :time-to="22 * 60"
@@ -40,7 +40,19 @@
               120,
               { title: `Session with ${fullName}`, class: 'blue-event' }
             )"
+            :selected-date="selectedDate"
           ></VueCal>
+
+          <div class="mt-2 d-flex justify-end">
+            <v-btn
+              tile
+              depressed
+              small
+              dark
+              @click="selectedDate = new Date()"
+              color="#1976d2"
+            >Today</v-btn>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -62,6 +74,7 @@ export default {
       // date picker
       picker: new Date().toISOString().substr(0, 10),
       events: [new Date().toISOString().substring(0, 10)],
+      selectedDate: new Date(),
       calendarEvents: [
         {
           start: '2020-05-15 10:00',
@@ -121,7 +134,16 @@ export default {
   width: 2rem;
 }
 
-.vuecal, .vuecal__title-bar {
+.vuecal,
+::v-deep .vuecal__title-bar {
   background-color: white;
+
+  .vuecal__title > span {
+    background-color: inherit;
+
+    &:hover {
+      cursor: initial;
+    }
+  }
 }
 </style>
