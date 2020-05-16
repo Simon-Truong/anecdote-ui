@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: process.env.VUE_APP_ENV !== 'production',
   state: {
-    isAuthenticated: false
+    isAuthenticated: false,
+    user: {}
   },
   getters: {
     isAuthenticated: state => {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     logout(state) {
       state.isAuthenticated = false;
+    },
+    setUser(state, user) {
+      state.user= user;
     }
   },
   actions: {}

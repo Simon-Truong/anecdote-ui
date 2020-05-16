@@ -133,10 +133,11 @@ export default {
       apiClient
         .logIn(body)
         .then(response => {
-          const { data } = response;
-          localStorage.setItem('accessToken', data.token);
+          const { token, user } = response.data;
+          localStorage.setItem('accessToken', token);
 
           this.$store.commit('login');
+          this.$store.commit('setUser', user)
           this.$router.push('/browse');
         })
         .catch(error => {
