@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <v-row>
-        <v-col cols="2">
+        <v-col cols="3">
           <v-card class="mb-4" tile flat>
             <v-list-item three-line>
               <v-list-item-content>
@@ -19,10 +19,20 @@
             </v-list-item>
           </v-card>
 
-          <v-date-picker color="primary" v-model="picker" no-title :events="events"></v-date-picker>
+          <v-date-picker
+            class="d-flex justify-end"
+            color="primary"
+            v-model="picker"
+            no-title
+            :events="events"
+            @change="selectPickerDate"
+          ></v-date-picker>
+          <div class="mt-2 d-flex justify-end">
+            <v-btn tile depressed small dark @click="resetDates" color="#1976d2">Today</v-btn>
+          </div>
         </v-col>
 
-        <v-col cols="10">
+        <v-col cols="9">
           <VueCal
             class="white-title"
             ref="vuecal"
@@ -34,24 +44,11 @@
             :disable-views="['years', 'year', 'month', 'day']"
             :events="calendarEvents"
             :cell-click-hold="false"
-            editable-events
-            @cell-dblclick="$refs.vuecal.createEvent(
-              $event,
-              120,
-              { title: `Session with ${fullName}`, class: 'blue-event' }
-            )"
-            :selected-date="selectedDate"
+            :selected-date="calendarSelectedDate"
+            @cell-click="syncPicker($event)"
           ></VueCal>
-
           <div class="mt-2 d-flex justify-end">
-            <v-btn
-              tile
-              depressed
-              small
-              dark
-              @click="selectedDate = new Date()"
-              color="#1976d2"
-            >Today</v-btn>
+            <v-btn tile depressed small dark color="#1976d2">Schedule</v-btn>
           </div>
         </v-col>
       </v-row>
@@ -73,8 +70,9 @@ export default {
     return {
       // date picker
       picker: new Date().toISOString().substr(0, 10),
-      events: [new Date().toISOString().substring(0, 10)],
-      selectedDate: new Date(),
+      events: ['2020-05-15'],
+      // calendar
+      calendarSelectedDate: new Date(),
       calendarEvents: [
         {
           start: '2020-05-15 10:00',
@@ -101,6 +99,26 @@ export default {
     getRandomAvatarColour() {
       const randomIndex = Math.floor(Math.random() * 10);
       return defaultAvatarColours[randomIndex];
+    },
+    selectPickerDate(date) {
+      this.calendarSelectedDate = new Date(date.split('-'));
+    },
+    syncPicker(dateObj) {
+      if (Object.prototype.hasOwnProperty.call(dateObj, 'date')) {
+        dateObj = dateObj.date;
+
+        dateObj.setHours(10);
+        this.picker = dateObj.toISOString().substr(0, 10);
+      } else {
+        dateObj.setHours(10);
+        this.picker = dateObj.toISOString().substr(0, 10);
+      }
+
+      console.log(dateObj);
+    },
+    resetDates() {
+      this.calendarSelectedDate = new Date();
+      this.picker = new Date().toISOString().substr(0, 10);
     }
   },
   computed: {
@@ -118,7 +136,7 @@ export default {
     this.getUser();
   },
   mounted() {
-    this.$refs.calendar.scrollToTime('08:00');
+    this.$refs.calendar ? this.$refs.calendar.scrollToTime('08:00') : null;
   }
 };
 </script>
