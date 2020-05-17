@@ -45,14 +45,22 @@
             :events="calendarEvents"
             :cell-click-hold="false"
             :selected-date="calendarSelectedDate"
-            @cell-click="syncPicker($event)"
+            @cell-click="onCellClick($event)"
           ></VueCal>
-          <div class="mt-2 d-flex justify-end">
-            <v-btn tile depressed small dark color="#1976d2">Schedule</v-btn>
-          </div>
         </v-col>
       </v-row>
     </v-container>
+
+    <v-dialog v-model="showDialog" width="500">
+      <v-card>
+        <v-card-title>
+          <div>Schedule</div>
+        </v-card-title>
+        <v-card-text>
+          
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -85,6 +93,12 @@ export default {
           class: 'health'
         }
       ],
+      // schedule
+      scheduleTimeFrom: null,
+      scheduleTimeTo: null,
+      scheduleLocation: '',
+      scheduleComments: '',
+      showDialog: false,
       selectedUserId: this.$route.params.id,
       selectedUser: null
     };
@@ -103,18 +117,27 @@ export default {
     selectPickerDate(date) {
       this.calendarSelectedDate = new Date(date.split('-'));
     },
-    syncPicker(dateObj) {
+    onCellClick(dateObj) {
       if (Object.prototype.hasOwnProperty.call(dateObj, 'date')) {
         dateObj = dateObj.date;
-
-        dateObj.setHours(10);
-        this.picker = dateObj.toISOString().substr(0, 10);
-      } else {
-        dateObj.setHours(10);
-        this.picker = dateObj.toISOString().substr(0, 10);
       }
 
       console.log(dateObj);
+
+      this.showScheduleDialog(dateObj);
+
+      this.syncPicker(dateObj);
+    },
+    showScheduleDialog(dateObj) {
+      this.scheduleTimeFrom = new Date(dateObj.getTime());
+      this.scheduleTimeTo = new Date(dateObj.getTime());
+
+      this.scheduleTimeTo.setHours(this.scheduleTimeTo.getHours() + 1);
+      this.showDialog = true;
+    },
+    syncPicker(dateObj) {
+      const tempDateObj = new Date(dateObj.getTime()).setHours(10);
+      this.picker = tempDateObj.toISOString().substr(0, 10);
     },
     resetDates() {
       this.calendarSelectedDate = new Date();
