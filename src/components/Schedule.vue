@@ -83,6 +83,18 @@
               <v-col cols="4">
                 <VueTimepicker v-model="timePickerTo" format="HH:mm"></VueTimepicker>
               </v-col>
+
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
+                <v-textarea v-model="comments" label="Comments" counter flat outlined>
+                </v-textarea>
+              </v-col>
+            </v-row>
+
+            <v-row class="d-flex justify-end">
+              <v-btn tile depressed small dark color="#1976d2">Schedule</v-btn>
             </v-row>
           </v-container>
         </v-card-text>
@@ -127,6 +139,8 @@ export default {
       scheduleLocation: '',
       scheduleComments: '',
       showDialog: false,
+      comments: '',
+      //
       selectedUserId: this.$route.params.id,
       selectedUser: null
     };
@@ -174,7 +188,11 @@ export default {
     },
     resetDates() {
       this.calendarSelectedDate = new Date();
-      this.picker = new Date().toISOString().substr(0, 10);
+
+      const tempPicker = new Date();
+
+      tempPicker.setHours(10);
+      this.picker = tempPicker.toISOString().substr(0, 10);
     }
   },
   computed: {
@@ -219,5 +237,15 @@ export default {
       cursor: initial;
     }
   }
+}
+
+::v-deep .vuecal__flex.vuecal__cells.week-view {
+  .vuecal__cell:hover {
+    cursor: pointer;
+  }
+}
+
+::v-deep .v-textarea {
+  border-radius: 0;
 }
 </style>
