@@ -6,7 +6,12 @@
           <v-card class="mb-4" tile flat>
             <v-list-item three-line>
               <v-list-item-content>
-                <v-list-item-title class="headline mb-1">{{ fullName }}</v-list-item-title>
+                <v-list-item-title class="headline mb-1">
+                  <router-link
+                    to="/profile"
+                    class="custom-routerlink font-weight-bold"
+                  >{{ fullName }}</router-link>
+                </v-list-item-title>
                 <v-list-item-subtitle>{{ tags }}</v-list-item-subtitle>
               </v-list-item-content>
 
@@ -122,7 +127,7 @@ export default {
       if (Object.prototype.hasOwnProperty.call(dateObj, 'date')) {
         dateObj = dateObj.date;
 
-        this.syncPicker(dateObj); // fix header click
+        this.syncPicker(dateObj);
         return;
       }
 
@@ -142,7 +147,10 @@ export default {
       this.showDialog = true;
     },
     syncPicker(dateObj) {
-      const tempDateObj = new Date(dateObj.getTime()).setHours(10);
+      const tempDateObj = new Date(dateObj.getTime());
+
+      tempDateObj.setHours(10);
+
       this.picker = tempDateObj.toISOString().substr(0, 10);
     },
     resetDates() {
