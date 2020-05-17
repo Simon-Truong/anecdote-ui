@@ -57,13 +57,34 @@
     </v-container>
 
     <v-dialog v-model="showDialog" width="500">
-      <v-card>
+      <v-card height="500">
         <v-card-title>
-          <div>Schedule</div>
+          <div>Session with {{ fullName }}</div>
+          <div class="ml-auto">
+            <em>{{ picker }}</em>
+          </div>
         </v-card-title>
+        <v-divider></v-divider>
         <v-card-text>
-          <p>{{ scheduleTimeFrom }}</p>
-          <p>{{ scheduleTimeTo }}</p>
+          <v-container>
+            <v-row>
+              <v-col cols="2" class="d-flex align-center">
+                <strong>FROM:</strong>
+              </v-col>
+
+              <v-col cols="4">
+                <VueTimepicker v-model="timePickerFrom" format="HH:mm"></VueTimepicker>
+              </v-col>
+
+              <v-col cols="2" class="d-flex align-center">
+                <strong>TO:</strong>
+              </v-col>
+
+              <v-col cols="4">
+                <VueTimepicker v-model="timePickerTo" format="HH:mm"></VueTimepicker>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -76,9 +97,10 @@ import { capitalCase } from 'capital-case';
 import defaultAvatarColours from '../shared/avatar-default-colours';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
+import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue';
 
 export default {
-  components: { VueCal },
+  components: { VueCal, VueTimepicker },
   name: 'Schedule',
   data() {
     return {
@@ -100,8 +122,8 @@ export default {
         }
       ],
       // schedule
-      scheduleTimeFrom: null,
-      scheduleTimeTo: null,
+      timePickerFrom: '',
+      timePickerTo: '',
       scheduleLocation: '',
       scheduleComments: '',
       showDialog: false,
@@ -131,18 +153,15 @@ export default {
         return;
       }
 
-      console.log(dateObj);
-
       this.showScheduleDialog(dateObj);
 
       this.syncPicker(dateObj);
     },
     showScheduleDialog(dateObj) {
-      this.scheduleTimeFrom = new Date(dateObj.getTime());
-      this.scheduleTimeFrom.setMinutes(0);
+      const scheduleTimeFrom = new Date(dateObj.getTime());
 
-      this.scheduleTimeTo = new Date(this.scheduleTimeFrom.getTime());
-      this.scheduleTimeTo.setHours(this.scheduleTimeTo.getHours() + 1);
+      this.timePickerFrom = `${scheduleTimeFrom.getHours()}:00`;
+      this.timePickerTo = `${scheduleTimeFrom.getHours() + 1}:00`;
 
       this.showDialog = true;
     },
