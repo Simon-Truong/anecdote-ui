@@ -121,6 +121,9 @@ export default {
     onCellClick(dateObj) {
       if (Object.prototype.hasOwnProperty.call(dateObj, 'date')) {
         dateObj = dateObj.date;
+
+        this.syncPicker(dateObj); // fix header click
+        return;
       }
 
       console.log(dateObj);
