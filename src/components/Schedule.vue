@@ -57,7 +57,8 @@
           <div>Schedule</div>
         </v-card-title>
         <v-card-text>
-          
+          <p>{{ scheduleTimeFrom }}</p>
+          <p>{{ scheduleTimeTo }}</p>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -130,9 +131,11 @@ export default {
     },
     showScheduleDialog(dateObj) {
       this.scheduleTimeFrom = new Date(dateObj.getTime());
-      this.scheduleTimeTo = new Date(dateObj.getTime());
+      this.scheduleTimeFrom.setMinutes(0);
 
+      this.scheduleTimeTo = new Date(this.scheduleTimeFrom.getTime());
       this.scheduleTimeTo.setHours(this.scheduleTimeTo.getHours() + 1);
+
       this.showDialog = true;
     },
     syncPicker(dateObj) {
