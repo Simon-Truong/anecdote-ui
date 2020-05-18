@@ -56,8 +56,8 @@
       </v-row>
     </v-container>
 
-    <v-dialog v-model="showDialog" width="500">
-      <v-card height="500">
+    <v-dialog v-model="showDialog" width="700">
+      <v-card height="900">
         <v-card-title>
           <div>Session with {{ fullName }}</div>
           <div class="ml-auto">
@@ -68,28 +68,34 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="2" class="d-flex align-center">
+              <v-col cols="1" class="d-flex align-center">
                 <strong>FROM:</strong>
               </v-col>
 
-              <v-col cols="4">
+              <v-col cols="3">
                 <VueTimepicker v-model="timePickerFrom" format="HH:mm"></VueTimepicker>
               </v-col>
 
-              <v-col cols="2" class="d-flex align-center">
+              <v-col cols="1" class="d-flex align-center">
                 <strong>TO:</strong>
               </v-col>
 
-              <v-col cols="4">
+              <v-col cols="3">
                 <VueTimepicker v-model="timePickerTo" format="HH:mm"></VueTimepicker>
               </v-col>
-
             </v-row>
 
             <v-row>
               <v-col cols="12">
-                <v-textarea v-model="comments" label="Comments" counter flat outlined>
-                </v-textarea>
+                <div id="app">
+                  <google-map />
+                </div>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12">
+                <v-textarea v-model="comments" label="Comments" counter flat outlined></v-textarea>
               </v-col>
             </v-row>
 
@@ -110,9 +116,10 @@ import defaultAvatarColours from '../shared/avatar-default-colours';
 import VueCal from 'vue-cal';
 import 'vue-cal/dist/vuecal.css';
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue';
+import GoogleMap from './GoogleMap';
 
 export default {
-  components: { VueCal, VueTimepicker },
+  components: { VueCal, VueTimepicker, GoogleMap },
   name: 'Schedule',
   data() {
     return {
