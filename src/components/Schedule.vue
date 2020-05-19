@@ -69,19 +69,19 @@
           <v-container>
             <v-row>
               <v-col cols="1" class="d-flex align-center">
-                <strong>FROM:</strong>
+                <strong>From:</strong>
               </v-col>
 
               <v-col cols="3">
-                <VueTimepicker v-model="timePickerFrom" format="HH:mm"></VueTimepicker>
+                <vue-timepicker class="input" v-model="timePickerFrom" format="HH:mm" hide-clear-button close-on-complete :hour-range="[[8, 21]]" hide-disabled-items></vue-timepicker>
               </v-col>
 
               <v-col cols="1" class="d-flex align-center">
-                <strong>TO:</strong>
+                <strong>To:</strong>
               </v-col>
 
               <v-col cols="3">
-                <VueTimepicker v-model="timePickerTo" format="HH:mm"></VueTimepicker>
+                <vue-timepicker class="input" v-model="timePickerTo" format="HH:mm" hide-clear-button close-on-complete :hour-range="[[9, 22]]" hide-disabled-items></vue-timepicker>
               </v-col>
             </v-row>
 
@@ -95,7 +95,7 @@
 
             <v-row>
               <v-col cols="12">
-                <v-textarea v-model="comments" label="Comments" counter flat outlined></v-textarea>
+                <v-textarea v-model="comments" label="Comments" counter="255" flat outlined></v-textarea>
               </v-col>
             </v-row>
 
@@ -223,6 +223,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/_variables.scss';
+
 .v-picker.v-card {
   box-shadow: none;
   border-radius: 0;
@@ -254,5 +256,37 @@ export default {
 
 ::v-deep .v-textarea {
   border-radius: 0;
+}
+
+::v-deep .vue__time-picker .dropdown ul li:not([disabled]).active, .vue__time-picker .dropdown ul li:not([disabled]).active:hover {
+  background: $primary;
+}
+
+.input {
+  -webkit-writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  color: -internal-light-dark-color(black, white);
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: start;
+  -webkit-appearance: textfield;
+  background-color: -internal-light-dark-color(white, black);
+  -webkit-rtl-ordering: logical;
+  cursor: text;
+  margin: 0em;
+  font: 400 13.3333px Arial;
+  padding: 1px 0px;
+  border-width: 2px;
+  border-style: inset;
+  border-color: initial;
+  border-image: initial;
+}
+
+::v-deep .vue__time-picker input.display-time {
+  border: none;
 }
 </style>
