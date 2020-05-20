@@ -162,7 +162,7 @@
 </template>
 
 <script>
-import apiClient from '../service/user.service';
+import { userService } from '../service/apiClient';
 import rulesMixins from '../mixins/rules.mixins';
 import responseHandlerMixins from '../mixins/response-handler.mixins';
 
@@ -215,7 +215,7 @@ export default {
 
       this.showSpinner = true;
 
-      apiClient
+      userService
         .signUp(newUser)
         .then(response => {
           this.processSuccessResponse(response.data);

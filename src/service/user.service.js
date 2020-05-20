@@ -1,32 +1,29 @@
-const axios = require('axios');
-
-const apiClient = axios.create({
-  baseURL: `${process.env.VUE_APP_API_URL}`
-});
-
-export default {
-  getUsers(query = '') {
-    return apiClient.get(`/users?q=${query}`);
-  },
-  getUserById(userId) {
-    return apiClient.get(`/user/${userId}`);
-  },
-  signUp(newUser) {
-    return apiClient.post(`/signup`, newUser);
-  },
-  logIn(body) {
-    return apiClient.post(`/login`, body);
-  },
-  verify(body) {
-    return apiClient.post(`/verify`, body);
-  },
-  resendCode(body) {
-    return apiClient.post(`/resendCode`, body);
-  },
-  requestResetPassword(body) {
-    return apiClient.post(`/requestResetPassword`, body);
-  },
-  resetPassword(body) {
-    return apiClient.post(`/resetPassword`, body)
+export default class UserService {
+  constructor(apiClient) {
+    this._apiClient = apiClient;
   }
-};
+  getUsers(query = '') {
+    return this._apiClient.get(`/users?q=${query}`);
+  }
+  getUserById(userId) {
+    return this._apiClient.get(`/user/${userId}`);
+  }
+  signUp(newUser) {
+    return this._apiClient.post(`/signup`, newUser);
+  }
+  logIn(body) {
+    return this._apiClient.post(`/login`, body);
+  }
+  verify(body) {
+    return this._apiClient.post(`/verify`, body);
+  }
+  resendCode(body) {
+    return this._apiClient.post(`/resendCode`, body);
+  }
+  requestResetPassword(body) {
+    return this._apiClient.post(`/requestResetPassword`, body);
+  }
+  resetPassword(body) {
+    return this._apiClient.post(`/resetPassword`, body);
+  }
+}

@@ -27,7 +27,7 @@
           <v-date-picker
             class="d-flex justify-end"
             color="primary"
-            v-model="picker"
+            v-model="datePicker"
             no-title
             :events="events"
             @change="selectPickerDate"
@@ -49,7 +49,7 @@
             :disable-views="['years', 'year', 'month', 'day']"
             :events="calendarEvents"
             :cell-click-hold="false"
-            :selected-date="calendarSelectedDate"
+            :selected-date="calenderPicker"
             @cell-click="onCellClick($event)"
           ></VueCal>
         </v-col>
@@ -61,7 +61,7 @@
         <v-card-title>
           <div>Session with {{ fullName }}</div>
           <div class="ml-auto">
-            <em>{{ picker }}</em>
+            <em>{{ datePicker }}</em>
           </div>
         </v-card-title>
         <v-divider></v-divider>
@@ -73,7 +73,15 @@
               </v-col>
 
               <v-col cols="3">
-                <vue-timepicker class="input" v-model="timePickerFrom" format="HH:mm" hide-clear-button close-on-complete :hour-range="[[8, 21]]" hide-disabled-items></vue-timepicker>
+                <vue-timepicker
+                  class="input"
+                  v-model="timePickerFrom"
+                  format="HH:mm"
+                  hide-clear-button
+                  close-on-complete
+                  :hour-range="[[8, 21]]"
+                  hide-disabled-items
+                ></vue-timepicker>
               </v-col>
 
               <v-col cols="1" class="d-flex align-center">
@@ -81,14 +89,22 @@
               </v-col>
 
               <v-col cols="3">
-                <vue-timepicker class="input" v-model="timePickerTo" format="HH:mm" hide-clear-button close-on-complete :hour-range="[[9, 22]]" hide-disabled-items></vue-timepicker>
+                <vue-timepicker
+                  class="input"
+                  v-model="timePickerTo"
+                  format="HH:mm"
+                  hide-clear-button
+                  close-on-complete
+                  :hour-range="[[9, 22]]"
+                  hide-disabled-items
+                ></vue-timepicker>
               </v-col>
             </v-row>
 
             <v-row>
               <v-col cols="12">
                 <div id="app">
-                  <google-map />
+                  <google-map @placeSelected="onPlaceSelect" />
                 </div>
               </v-col>
             </v-row>
@@ -100,7 +116,7 @@
             </v-row>
 
             <v-row class="d-flex justify-end">
-              <v-btn tile depressed small dark color="#1976d2">Schedule</v-btn>
+              <v-btn tile depressed small dark color="#1976d2" @click="submitSchedule">Schedule</v-btn>
             </v-row>
           </v-container>
         </v-card-text>
@@ -110,13 +126,14 @@
 </template>
 
 <script>
-import apiClient from '../service/user.service';
-import { capitalCase } from 'capital-case';
-import defaultAvatarColours from '../shared/avatar-default-colours';
 import VueCal from 'vue-cal';
-import 'vue-cal/dist/vuecal.css';
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue';
+import { userService } from '../service/apiClient';
+import defaultAvatarColours from '../shared/avatar-default-colours';
 import GoogleMap from './GoogleMap';
+import moment from 'moment';
+import { capitalCase } from 'capital-case';
+import 'vue-cal/dist/vuecal.css';
 
 export default {
   components: { VueCal, VueTimepicker, GoogleMap },
@@ -124,10 +141,10 @@ export default {
   data() {
     return {
       // date picker
-      picker: new Date().toISOString().substr(0, 10),
+      datePicker: new Date().toISOString().substr(0, 10),
       events: ['2020-05-15'],
-      // calendar
-      calendarSelectedDate: new Date(),
+      // calendar picker
+      calenderPicker: new Date(),
       calendarEvents: [
         {
           start: '2020-05-15 10:00',
@@ -154,7 +171,7 @@ export default {
   },
   methods: {
     getUser() {
-      apiClient
+      userService
         .getUserById(this.selectedUserId)
         .then(response => (this.selectedUser = response.data))
         .catch(error => console.log({ error }));
@@ -164,7 +181,7 @@ export default {
       return defaultAvatarColours[randomIndex];
     },
     selectPickerDate(date) {
-      this.calendarSelectedDate = new Date(date.split('-'));
+      this.calenderPicker = new Date(date.split('-'));
     },
     onCellClick(dateObj) {
       if (Object.prototype.hasOwnProperty.call(dateObj, 'date')) {
@@ -177,6 +194,26 @@ export default {
       this.showScheduleDialog(dateObj);
 
       this.syncPicker(dateObj);
+    },
+    submitSchedule() {
+      const userId = this.$store.getters.user.id;
+
+      console.log(userId);
+      console.log(this.selectedUserId);
+
+      console.warn(moment.utc(`${this.datePicker} ${this.timePickerFrom}`).format());
+      console.warn(moment.utc(`${this.datePicker} ${this.timePickerTo}`).format());
+
+      console.log(this.selectedPlaceLat, this.selectedPlaceLng);
+
+      console.log(this.comments);
+
+      // userId
+      // sleectedUserId
+      // timeTo
+      // timeFrom
+      // place
+      // comment
     },
     showScheduleDialog(dateObj) {
       const scheduleTimeFrom = new Date(dateObj.getTime());
@@ -191,15 +228,19 @@ export default {
 
       tempDateObj.setHours(10);
 
-      this.picker = tempDateObj.toISOString().substr(0, 10);
+      this.datePicker = tempDateObj.toISOString().substr(0, 10);
     },
     resetDates() {
-      this.calendarSelectedDate = new Date();
+      this.calenderPicker = new Date();
 
       const tempPicker = new Date();
 
       tempPicker.setHours(10);
-      this.picker = tempPicker.toISOString().substr(0, 10);
+      this.datePicker = tempPicker.toISOString().substr(0, 10);
+    },
+    onPlaceSelect({ lat, lng }) {
+      this.selectedPlaceLat = lat;
+      this.selectedPlaceLng = lng;
     }
   },
   computed: {
@@ -258,7 +299,8 @@ export default {
   border-radius: 0;
 }
 
-::v-deep .vue__time-picker .dropdown ul li:not([disabled]).active, .vue__time-picker .dropdown ul li:not([disabled]).active:hover {
+::v-deep .vue__time-picker .dropdown ul li:not([disabled]).active,
+.vue__time-picker .dropdown ul li:not([disabled]).active:hover {
   background: $primary;
 }
 

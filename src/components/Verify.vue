@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import apiClient from '../service/user.service';
+import { userService } from '../service/apiClient';
 import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
@@ -54,7 +54,7 @@ export default {
         secretCode: this.secretCode
       };
 
-      apiClient
+      userService
         .verify(body)
         .then(response => {
           this.processSuccessResponse(response.data);
@@ -69,7 +69,7 @@ export default {
 
       this.showSpinner = true;
 
-      apiClient
+      userService
         .resendCode(body)
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))

@@ -10,8 +10,11 @@ export default new Vuex.Store({
     user: {}
   },
   getters: {
-    isAuthenticated: state => {
+    isAuthenticated(state) {
       return state.isAuthenticated;
+    },
+    user(state) {
+      return state.user;
     }
   },
   mutations: {
@@ -22,7 +25,7 @@ export default new Vuex.Store({
       state.isAuthenticated = false;
     },
     setUser(state, user) {
-      state.user= user;
+      state.user = user;
     }
   },
   actions: {}

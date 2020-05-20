@@ -9,10 +9,7 @@
     </div>
     <br />
     <gmap-map :center="center" :zoom="12" style="width:100%;  height: 400px;">
-      <gmap-marker
-        :position="marker.position"
-        @click="center=marker.position"
-      ></gmap-marker>
+      <gmap-marker :position="marker.position" @click="center=marker.position"></gmap-marker>
     </gmap-map>
   </div>
 </template>
@@ -48,6 +45,8 @@ export default {
         this.place = { position: marker };
         this.center = marker;
         this.currentPlace = null;
+
+        this.$emit('placeSelected', this.place.position);
       }
     },
     geolocate() {
@@ -57,7 +56,7 @@ export default {
           lng: position.coords.longitude
         };
       });
-    },
+    }
   }
 };
 </script>
@@ -111,5 +110,4 @@ export default {
   border-color: initial;
   border-image: initial;
 }
-
 </style>

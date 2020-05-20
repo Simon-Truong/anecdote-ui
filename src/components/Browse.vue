@@ -72,7 +72,7 @@
 
 <script>
 import defaultAvatarColours from '../shared/avatar-default-colours';
-import apiClient from '../service/user.service';
+import { userService } from '../service/apiClient';
 import { capitalCase } from 'capital-case';
 
 export default {
@@ -112,7 +112,7 @@ export default {
   },
   methods: {
     getUsers() {
-      apiClient
+      userService
         .getUsers(this.query)
         .then(response => {
           const users = response.data;

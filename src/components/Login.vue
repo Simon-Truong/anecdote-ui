@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import apiClient from '../service/user.service';
+import { userService } from '../service/apiClient';
 import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
@@ -130,14 +130,14 @@ export default {
         password: this.password
       };
 
-      apiClient
+      userService
         .logIn(body)
         .then(response => {
           const { token, user } = response.data;
           localStorage.setItem('accessToken', token);
 
           this.$store.commit('login');
-          this.$store.commit('setUser', user)
+          this.$store.commit('setUser', user);
           this.$router.push('/browse');
         })
         .catch(error => {
@@ -155,7 +155,7 @@ export default {
     resendCode() {
       this.showSpinner = true;
 
-      apiClient
+      userService
         .resendCode({ email: this.email })
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))
@@ -170,7 +170,7 @@ export default {
 
       this.showSpinner = true;
 
-      apiClient
+      userService
         .requestResetPassword({ email })
         .then(response => this.processSuccessResponse(response.data))
         .catch(error => this.processErrorResponse(error.response))

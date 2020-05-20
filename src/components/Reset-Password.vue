@@ -79,7 +79,7 @@
 <script>
 import rulesMixins from '../mixins/rules.mixins';
 import responseHandlerMixins from '../mixins/response-handler.mixins';
-import apiClient from '../service/user.service';
+import { userService } from '../service/apiClient';
 
 export default {
   name: 'ResetPassword',
@@ -109,7 +109,7 @@ export default {
         confirmPassword: this.confirmPassword
       };
 
-      apiClient
+      userService
         .resetPassword(body)
         .then(response => {
           this.processSuccessResponse(response.data);
