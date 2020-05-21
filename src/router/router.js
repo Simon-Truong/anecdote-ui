@@ -49,8 +49,7 @@ const routes = [
   },
   {
     path: '/logout',
-    name: 'logout',
-    redirect: '/'
+    name: 'logout'
   },
   {
     path: '/*',
@@ -71,9 +70,11 @@ router.beforeEach((to, from, next) => {
     store.commit('login');
   }
 
-  if (to.redirectedFrom === '/logout') {
+  if (to.path === '/logout') {
     localStorage.removeItem('accessToken');
     store.commit('logout');
+    next('/');
+    return;
   }
 
   next();
