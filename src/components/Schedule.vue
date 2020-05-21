@@ -41,7 +41,7 @@
           <VueCal
             class="white-title"
             ref="vuecal"
-            style="height: 70%;"
+            style="height: 100%;"
             hide-view-selector
             active-view="week"
             :time-from="8 * 60"
@@ -126,13 +126,13 @@
 </template>
 
 <script>
+import { userService, scheduleService } from '../service/apiClient';
+import { capitalCase } from 'capital-case';
 import VueCal from 'vue-cal';
 import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue';
-import { userService } from '../service/apiClient';
 import defaultAvatarColours from '../shared/avatar-default-colours';
 import GoogleMap from './GoogleMap';
 import moment from 'moment';
-import { capitalCase } from 'capital-case';
 import 'vue-cal/dist/vuecal.css';
 
 export default {
@@ -196,24 +196,20 @@ export default {
       this.syncPicker(dateObj);
     },
     submitSchedule() {
-      const userId = this.$store.getters.user.id;
+      const body = {
+        userId: this.$store.getters.user.id,
+        selectedUserId: this.selectedUserId,
+        from: moment.utc(`${this.datePicker} ${this.timePickerFrom}`).format(),
+        to: moment.utc(`${this.datePicker} ${this.timePickerTo}`).format(),
+        lat: this.selectedPlaceLat,
+        lng: this.selectedPlaceLng,
+        comments: this.comments
+      };
 
-      console.log(userId);
-      console.log(this.selectedUserId);
-
-      console.warn(moment.utc(`${this.datePicker} ${this.timePickerFrom}`).format());
-      console.warn(moment.utc(`${this.datePicker} ${this.timePickerTo}`).format());
-
-      console.log(this.selectedPlaceLat, this.selectedPlaceLng);
-
-      console.log(this.comments);
-
-      // userId
-      // sleectedUserId
-      // timeTo
-      // timeFrom
-      // place
-      // comment
+      scheduleService
+        .saveSchedule(body)
+        .then(response => console.log({ response }))
+        .catch(error => console.log({ error }));
     },
     showScheduleDialog(dateObj) {
       const scheduleTimeFrom = new Date(dateObj.getTime());
