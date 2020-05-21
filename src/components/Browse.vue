@@ -50,7 +50,7 @@
               <span class="custom-table-data">{{ item._tags }}</span>
             </template>
 
-            <template v-slot:item.actions="{ item }">
+            <template v-if="isAuthenticated" v-slot:item.actions="{ item }">
               <div class="d-flex justify-center">
                 <v-btn class="mr-2" icon @click="navigateToSchedule(item.id)">
                   <v-icon>far fa-calendar-alt</v-icon>
@@ -81,7 +81,6 @@ export default {
     return {
       query: null,
       isLoading: true,
-
       // grid
       headers: [
         {
@@ -145,6 +144,11 @@ export default {
     this.query = this.$route.query.q;
 
     this.getUsers(this.query);
+  },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    }
   }
 };
 </script>
