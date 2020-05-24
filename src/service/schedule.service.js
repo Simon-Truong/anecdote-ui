@@ -4,6 +4,6 @@ export default class ScheduleService {
   }
 
   saveSchedule(body) {
-    this._apiClient.post(`/schedule`, body);
+    this._apiClient.post(`/protected/schedule`, body);
   }
 }
