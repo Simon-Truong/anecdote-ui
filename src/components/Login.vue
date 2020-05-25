@@ -133,11 +133,8 @@ export default {
       userService
         .logIn(body)
         .then(response => {
-          const { token, user } = response.data;
-          localStorage.setItem('accessToken', token);
+          this.updateStore(response);
 
-          this.$store.commit('login');
-          this.$store.commit('setUser', user);
           this.$router.push('/browse');
         })
         .catch(error => {
@@ -151,6 +148,13 @@ export default {
 
           this.processErrorResponse(error.response);
         });
+    },
+    updateStore(response) {
+      const { token, user } = response.data;
+
+      this.$store.commit('setAccessToken', token);
+      this.$store.commit('login');
+      this.$store.commit('setUser', user);
     },
     resendCode() {
       this.showSpinner = true;

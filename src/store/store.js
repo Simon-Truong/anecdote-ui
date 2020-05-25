@@ -7,11 +7,15 @@ export default new Vuex.Store({
   strict: process.env.VUE_APP_ENV !== 'production',
   state: {
     isAuthenticated: false,
-    user: {}
+    accessToken: null,
+    user: null
   },
   getters: {
     isAuthenticated(state) {
       return state.isAuthenticated;
+    },
+    accessToken(state) {
+      return state.accessToken
     },
     user(state) {
       return state.user;
@@ -26,6 +30,15 @@ export default new Vuex.Store({
     },
     setUser(state, user) {
       state.user = user;
+    },
+    removeUser(state) {
+      state.user = null;
+    },
+    setAccessToken(state, accessToken) {
+      state.accessToken = accessToken;
+    },
+    removeAccessToken(state) {
+      state.accessToken = null;
     }
   },
   actions: {}

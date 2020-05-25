@@ -64,14 +64,15 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const accessToken = localStorage.getItem('accessToken');
+  const accessToken = store.getters.accessToken;
 
   if (accessToken) {
     store.commit('login');
   }
 
   if (to.path === '/logout') {
-    localStorage.removeItem('accessToken');
+    store.commit('removeUser');
+    store.commit('removeAccessToken');
     store.commit('logout');
     next('/');
     return;
