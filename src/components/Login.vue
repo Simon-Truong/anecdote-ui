@@ -134,6 +134,7 @@ export default {
         .logIn(body)
         .then(response => {
           this.updateStore(response);
+          this.setCountDownForRefresh(response.data.accessTokenExpInMins);
 
           this.$router.push('/browse');
         })
@@ -155,6 +156,11 @@ export default {
       this.$store.commit('setAccessToken', token);
       this.$store.commit('login');
       this.$store.commit('setUser', user);
+    },
+    setCountDownForRefresh(expInMins) {
+      setTimeout(() => {
+        // do refresh here
+      }, expInMins * 60 * 1000);
     },
     resendCode() {
       this.showSpinner = true;
