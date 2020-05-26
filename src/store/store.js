@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import authService from '../service/authClient';
 
 Vue.use(Vuex);
 
@@ -41,5 +42,14 @@ export default new Vuex.Store({
       state.accessToken = null;
     }
   },
-  actions: {}
+  actions: {
+    refreshToken({ dispatch }, accessTokenExpInMins) {
+      setTimeout(async () => {
+        const response = await authService.refreshToken();
+        const tempExp = response.accessTokenExpInMins;
+
+        dispatch('refreshTokenCountDown', tempExp);
+      }, accessTokenExpInMins * 60 * 1000);
+    }
+  }
 });

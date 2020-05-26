@@ -98,7 +98,8 @@
 </template>
 
 <script>
-import { userService, authService } from '../service/apiClient';
+import { userService } from '../service/apiClient';
+import authService   from '../service/authClient';
 import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
@@ -134,7 +135,8 @@ export default {
         .logIn(body)
         .then(response => {
           this.updateStore(response);
-          this.setCountDownForRefresh(response.data.accessTokenExpInMins);
+
+          this.$store.dispatch('refreshToken', response.data.accessTokenExpInMins);
 
           this.$router.push('/browse');
         })
@@ -156,11 +158,6 @@ export default {
       this.$store.commit('setAccessToken', token);
       this.$store.commit('login');
       this.$store.commit('setUser', user);
-    },
-    setCountDownForRefresh(expInMins) {
-      setTimeout(() => {
-        // do refresh here
-      }, expInMins * 60 * 1000);
     },
     resendCode() {
       this.showSpinner = true;

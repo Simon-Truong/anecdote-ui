@@ -6,4 +6,8 @@ export default class AuthService {
   logIn(body) {
     return this._authClient.post(`/login`, body);
   }
+
+  refreshToken() {
+      return this._authClient.get(`/refreshToken`);
+  }
 }
