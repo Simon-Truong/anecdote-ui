@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { userService } from '../service/apiClient';
+import { userService, authService } from '../service/apiClient';
 import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
@@ -130,7 +130,7 @@ export default {
         password: this.password
       };
 
-      userService
+      authService
         .logIn(body)
         .then(response => {
           this.updateStore(response);

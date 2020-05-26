@@ -1,6 +1,8 @@
-export default class ScheduleService {
+import BaseService from './base.service';
+
+export default class ScheduleService extends BaseService {
   constructor(apiClient) {
-    this._apiClient = apiClient;
+    super(apiClient);
   }
 
   saveSchedule(body) {

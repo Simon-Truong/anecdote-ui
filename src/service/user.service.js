@@ -1,6 +1,8 @@
-export default class UserService {
+import BaseService from './base.service';
+
+export default class UserService extends BaseService {
   constructor(apiClient) {
-    this._apiClient = apiClient;
+    super(apiClient);
   }
   getUsers(query = '') {
     return this._apiClient.get(`/users?q=${query}`);
@@ -10,9 +12,6 @@ export default class UserService {
   }
   signUp(newUser) {
     return this._apiClient.post(`/signup`, newUser);
-  }
-  logIn(body) {
-    return this._apiClient.post(`/login`, body);
   }
   verify(body) {
     return this._apiClient.post(`/verify`, body);
