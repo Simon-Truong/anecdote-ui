@@ -153,9 +153,9 @@ export default {
         });
     },
     updateStore(response) {
-      const { token, user } = response.data;
+      const { accessToken, user } = response.data;
 
-      this.$store.commit('setAccessToken', token);
+      this.$store.commit('setAccessToken', accessToken);
       this.$store.commit('login');
       this.$store.commit('setUser', user);
     },

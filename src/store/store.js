@@ -16,7 +16,7 @@ export default new Vuex.Store({
       return state.isAuthenticated;
     },
     accessToken(state) {
-      return state.accessToken
+      return state.accessToken;
     },
     user(state) {
       return state.user;
@@ -43,12 +43,14 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    refreshToken({ dispatch }, accessTokenExpInMins) {
+    refreshToken({ dispatch, commit }, accessTokenExpInMins) {
       setTimeout(async () => {
-        const response = await authService.refreshToken();
-        const tempExp = response.accessTokenExpInMins;
+        const { data } = await authService.refreshToken();
+        const newExpInMins = data.accessTokenExpInMins;
 
-        dispatch('refreshTokenCountDown', tempExp);
+        commit('setAccessToken', data.accessToken);
+        
+        dispatch('refreshToken', newExpInMins);
       }, accessTokenExpInMins * 60 * 1000);
     }
   }
