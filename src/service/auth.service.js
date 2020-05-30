@@ -1,5 +1,3 @@
-import store from '../store/store';
-
 export default class AuthService {
   constructor(authClient) {
     this._authClient = authClient;
@@ -10,6 +8,10 @@ export default class AuthService {
   }
 
   refreshToken() {
-    return this._authClient.get(`/refreshToken/${store.getters.user.id}`);
+    return this._authClient.get(`/refreshToken`);
+  }
+
+  removeRefreshToken() {
+    return this._authClient.get(`/removeRefreshToken`);
   }
 }

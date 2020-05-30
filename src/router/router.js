@@ -7,7 +7,7 @@ import Browse from '../components/Browse';
 import Verify from '../components/Verify';
 import ResetPassword from '../components/Reset-Password';
 import Schedule from '../components/Schedule';
-import store from '../store/store';
+import navigationGuard from './navigation-guard';
 
 Vue.use(VueRouter);
 
@@ -45,7 +45,12 @@ const routes = [
   {
     path: '/schedule/:id',
     name: 'schedule',
-    component: Schedule
+    component: Schedule,
+    async beforeEnter(to, from, next) {
+      if (await navigationGuard.tryRefreshToken(next, true)) {
+        next();
+      }
+    }
   },
   {
     path: '/logout',
@@ -63,19 +68,11 @@ const router = new VueRouter({
   mode: 'history'
 });
 
-router.beforeEach((to, from, next) => {
-  const accessToken = store.getters.accessToken;
-
-  if (accessToken) {
-    store.commit('login');
-  }
+router.beforeEach(async (to, from, next) => {
+  await navigationGuard.tryRefreshToken(next);
 
   if (to.path === '/logout') {
-    store.commit('removeUser');
-    store.commit('removeAccessToken');
-    store.commit('logout');
-    next('/');
-    return;
+    return navigationGuard.logOut(next);
   }
 
   next();

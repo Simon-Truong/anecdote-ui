@@ -99,7 +99,7 @@
 
 <script>
 import { userService } from '../service/apiClient';
-import authService   from '../service/authClient';
+import authService from '../service/authClient';
 import responseHandlerMixins from '../mixins/response-handler.mixins';
 
 export default {
@@ -133,10 +133,8 @@ export default {
 
       authService
         .logIn(body)
-        .then(response => {
-          this.updateStore(response);
-
-          this.$store.dispatch('refreshToken', response.data.accessTokenExpInMins);
+        .then(({ data }) => {
+          this.updateStore(data);
 
           this.$router.push('/browse');
         })
@@ -152,12 +150,14 @@ export default {
           this.processErrorResponse(error.response);
         });
     },
-    updateStore(response) {
-      const { accessToken, user } = response.data;
+    updateStore(data) {
+      const { accessToken, user, accessTokenExpInMins } = data;
 
-      this.$store.commit('setAccessToken', accessToken);
       this.$store.commit('login');
+      this.$store.commit('setAccessToken', accessToken);
       this.$store.commit('setUser', user);
+
+      this.$store.dispatch('autoRefresh', accessTokenExpInMins);
     },
     resendCode() {
       this.showSpinner = true;

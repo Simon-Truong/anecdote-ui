@@ -9,7 +9,8 @@ export default new Vuex.Store({
   state: {
     isAuthenticated: false,
     accessToken: null,
-    user: null
+    user: null,
+    setTimeOutId: null
   },
   getters: {
     isAuthenticated(state) {
@@ -20,6 +21,9 @@ export default new Vuex.Store({
     },
     user(state) {
       return state.user;
+    },
+    setTimeOutId(state) {
+      return state.setTimeOutId;
     }
   },
   mutations: {
@@ -40,18 +44,29 @@ export default new Vuex.Store({
     },
     removeAccessToken(state) {
       state.accessToken = null;
+    },
+    setTimeOutId(state, id) {
+      state.setTimeOutId = id;
+    },
+    removeSetTimeOutId(state) {
+      state.setTimeOutId = null;
     }
   },
   actions: {
-    refreshToken({ dispatch, commit }, accessTokenExpInMins) {
-      setTimeout(async () => {
-        const { data } = await authService.refreshToken();
-        const newExpInMins = data.accessTokenExpInMins;
+    autoRefresh({ dispatch, commit }, accessTokenExpInMins) {
+      const id = setTimeout(() => {
+        authService.refreshToken().then(({ data: { accessToken, accessTokenExpInMins, user } }) => {
+          const newExpInMins = accessTokenExpInMins;
 
-        commit('setAccessToken', data.accessToken);
-        
-        dispatch('refreshToken', newExpInMins);
+          commit('login');
+          commit('setAccessToken', accessToken);
+          commit('setUser', user);
+
+          dispatch('autoRefresh', newExpInMins);
+        });
       }, accessTokenExpInMins * 60 * 1000);
+
+      commit('setTimeOutId', id);
     }
   }
 });
