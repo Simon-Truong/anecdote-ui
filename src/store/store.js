@@ -53,16 +53,17 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    updateSession({ dispatch, commit }, { accessToken, user, accessTokenExpInMins }) {
+      commit('login');
+      commit('setAccessToken', accessToken);
+      commit('setUser', user);
+
+      dispatch('autoRefresh', accessTokenExpInMins);
+    },
     autoRefresh({ dispatch, commit }, accessTokenExpInMins) {
       const id = setTimeout(() => {
-        authService.refreshToken().then(({ data: { accessToken, accessTokenExpInMins, user } }) => {
-          const newExpInMins = accessTokenExpInMins;
-
-          commit('login');
-          commit('setAccessToken', accessToken);
-          commit('setUser', user);
-
-          dispatch('autoRefresh', newExpInMins);
+        authService.refreshToken().then(({ data }) => {
+          dispatch('updateSession', data);
         });
       }, accessTokenExpInMins * 60 * 1000);
 

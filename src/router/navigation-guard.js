@@ -11,12 +11,8 @@ class NavigationGuard {
 
     const successful = await authService
       .refreshToken()
-      .then(({ data: { accessToken, accessTokenExpInMins, user } }) => {
-        store.commit('login');
-        store.commit('setAccessToken', accessToken);
-        store.commit('setUser', user);
-
-        store.dispatch('autoRefresh', accessTokenExpInMins);
+      .then(({ data }) => {
+        store.dispatch('updateSession', data);
         return true;
       })
       .catch(error => {

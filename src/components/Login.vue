@@ -151,13 +151,7 @@ export default {
         });
     },
     updateStore(data) {
-      const { accessToken, user, accessTokenExpInMins } = data;
-
-      this.$store.commit('login');
-      this.$store.commit('setAccessToken', accessToken);
-      this.$store.commit('setUser', user);
-
-      this.$store.dispatch('autoRefresh', accessTokenExpInMins);
+      this.$store.dispatch('updateSession', data);
     },
     resendCode() {
       this.showSpinner = true;
