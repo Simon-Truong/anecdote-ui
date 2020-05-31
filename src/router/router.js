@@ -72,7 +72,10 @@ router.beforeEach(async (to, from, next) => {
   await navigationGuard.tryRefreshToken(next);
 
   if (to.path === '/logout') {
-    return navigationGuard.logOut(next);
+    localStorage.setItem('logout', Date.now());
+    await navigationGuard.logOut();
+    next('/');
+    return;
   }
 
   next();

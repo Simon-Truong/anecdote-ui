@@ -12,17 +12,24 @@
 <script>
 import AppBar from './components/App-bar';
 import Footer from './components/Footer';
+import navigationGuard from './router/navigation-guard';
 
 export default {
   name: 'App',
-
   components: {
     AppBar,
     Footer
   },
-
   data() {
     return {};
+  },
+  created() {
+    window.addEventListener('storage', async event => {
+      if (event.key === 'logout') {
+        await navigationGuard.logOut();
+        this.$router.push('/');
+      }
+    });
   }
 };
 </script>

@@ -15,8 +15,9 @@ class NavigationGuard {
         store.dispatch('updateSession', data);
         return true;
       })
-      .catch(error => {
+      .catch(async error => {
         if (error.response.status === 401 && protectedRoute) {
+          await this.logOut();
           next('/');
           return false;
         }
@@ -27,7 +28,7 @@ class NavigationGuard {
     return successful;
   }
 
-  async logOut(next) {
+  async logOut() {
     store.commit('logout');
     store.commit('removeAccessToken');
     store.commit('removeUser');
@@ -36,9 +37,6 @@ class NavigationGuard {
     store.commit('removeSetTimeOutId');
 
     await authService.removeRefreshToken();
-
-    next('/');
-    return;
   }
 }
 
