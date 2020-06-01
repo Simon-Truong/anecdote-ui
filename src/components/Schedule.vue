@@ -67,57 +67,73 @@
         <v-divider></v-divider>
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="1" class="d-flex align-center">
-                <strong>From:</strong>
-              </v-col>
+            <v-form ref="form" v-model="isFormValid">
+              <v-row>
+                <v-col cols="1" class="d-flex align-center">
+                  <strong>From:</strong>
+                </v-col>
 
-              <v-col cols="3">
-                <vue-timepicker
-                  class="input"
-                  v-model="timePickerFrom"
-                  format="HH:mm"
-                  hide-clear-button
-                  close-on-complete
-                  :hour-range="[[8, 21]]"
-                  hide-disabled-items
-                ></vue-timepicker>
-              </v-col>
+                <v-col cols="3">
+                  <vue-timepicker
+                    class="input"
+                    v-model="timePickerFrom"
+                    format="HH:mm"
+                    hide-clear-button
+                    close-on-complete
+                    :hour-range="[[8, 21]]"
+                    hide-disabled-items
+                  ></vue-timepicker>
+                </v-col>
 
-              <v-col cols="1" class="d-flex align-center">
-                <strong>To:</strong>
-              </v-col>
+                <v-col cols="1" class="d-flex align-center">
+                  <strong>To:</strong>
+                </v-col>
 
-              <v-col cols="3">
-                <vue-timepicker
-                  class="input"
-                  v-model="timePickerTo"
-                  format="HH:mm"
-                  hide-clear-button
-                  close-on-complete
-                  :hour-range="[[9, 22]]"
-                  hide-disabled-items
-                ></vue-timepicker>
-              </v-col>
-            </v-row>
+                <v-col cols="3">
+                  <vue-timepicker
+                    class="input"
+                    v-model="timePickerTo"
+                    format="HH:mm"
+                    hide-clear-button
+                    close-on-complete
+                    :hour-range="[[9, 22]]"
+                    hide-disabled-items
+                  ></vue-timepicker>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <div id="app">
+                    <google-map @placeSelected="onPlaceSelect" />
+                  </div>
+                </v-col>
+              </v-row>
 
-            <v-row>
-              <v-col cols="12">
-                <div id="app">
-                  <google-map @placeSelected="onPlaceSelect" />
-                </div>
-              </v-col>
-            </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-textarea
+                    v-model="comments"
+                    label="Comments"
+                    counter="255"
+                    flat
+                    outlined
+                    :rules="[rules.maxCommentLength]"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
 
-            <v-row>
-              <v-col cols="12">
-                <v-textarea v-model="comments" label="Comments" counter="255" flat outlined></v-textarea>
-              </v-col>
-            </v-row>
-
-            <v-row class="d-flex justify-end">
-              <v-btn tile depressed small dark color="#1976d2" @click="submitSchedule">Schedule</v-btn>
-            </v-row>
+              <v-row class="d-flex justify-end">
+                <v-btn
+                  tile
+                  depressed
+                  small
+                  dark
+                  color="#1976d2"
+                  @click="submitSchedule"
+                  :disabled="!isFormValid || !selectedPlaceLat || !selectedPlaceLng"
+                >Schedule</v-btn>
+              </v-row>
+            </v-form>
           </v-container>
         </v-card-text>
       </v-card>
@@ -133,13 +149,16 @@ import VueTimepicker from 'vue2-timepicker/src/vue-timepicker.vue';
 import defaultAvatarColours from '../shared/avatar-default-colours';
 import GoogleMap from './GoogleMap';
 import moment from 'moment';
+import rulesMixins from '../mixins/rules.mixins';
 import 'vue-cal/dist/vuecal.css';
 
 export default {
   components: { VueCal, VueTimepicker, GoogleMap },
   name: 'Schedule',
+  mixins: [rulesMixins],
   data() {
     return {
+      isFormValid: true,
       // date picker
       datePicker: new Date().toISOString().substr(0, 10),
       events: ['2020-05-15'],
@@ -160,7 +179,8 @@ export default {
       // schedule
       timePickerFrom: '',
       timePickerTo: '',
-      scheduleLocation: '',
+      selectedPlaceLat: null,
+      selectedPlaceLng: null,
       scheduleComments: '',
       showDialog: false,
       comments: '',
@@ -196,6 +216,12 @@ export default {
       this.syncPicker(dateObj);
     },
     submitSchedule() {
+      this.$refs.form.validate();
+
+      if (!this.isFormValid) {
+        return;
+      }
+
       const body = {
         userId: this.$store.getters.user.id,
         selectedUserId: this.selectedUserId,

@@ -3,7 +3,7 @@
     <div>
       <label>
         <gmap-autocomplete class="input" placeholder="Search" @place_changed="setPlace"></gmap-autocomplete>
-        <button class="button ml-2" @click="addMarker">Select</button>
+        <button type="button" class="button ml-2" @click="addMarker">Select</button>
       </label>
       <br />
     </div>

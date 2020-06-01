@@ -39,6 +39,13 @@ export default {
                   }
         
                   return true;
+                },
+                maxCommentLength: value => {
+                  if (value.length > 255) {
+                    return '';
+                  }
+
+                  return true;
                 }
             }
         }
