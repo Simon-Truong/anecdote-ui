@@ -14,8 +14,12 @@ export default class ScheduleService extends BaseService {
     };
   }
 
-  getSchedules(monthYear) {
-    return this._apiClient.get(`/protected/schedule?d=${monthYear}`, this.getAuthHeaders());
+  getSchedules(monthYear, selectedUserId) {
+    return this._apiClient.get(`/protected/schedule?d=${monthYear}&u=${selectedUserId}`, this.getAuthHeaders());
+  }
+
+  getDetailSchedules(dateFrom, dateTo, selectedUserId) {
+    return this._apiClient.get(`/protected/detailSchedule?f=${dateFrom}&t=${dateTo}&u=${selectedUserId}`, this.getAuthHeaders());
   }
 
   saveSchedule(body) {

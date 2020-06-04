@@ -53,6 +53,7 @@
             :cell-click-hold="false"
             :selected-date="calenderPicker"
             @cell-click="onCellClick($event)"
+            @view-change="onViewChange($event)"
           ></VueCal>
         </v-col>
       </v-row>
@@ -168,18 +169,7 @@ export default {
       events: [],
       // calendar picker
       calenderPicker: new Date(),
-      calendarEvents: [
-        {
-          start: '2020-05-15 10:00',
-          end: '2020-05-15 11:00',
-          // You can also define event dates with Javascript Date objects:
-          // start: new Date(2018, 11 - 1, 16, 10, 30),
-          // end: new Date(2018, 11 - 1, 16, 11, 30),
-          title: 'Session with Andrew',
-          content: '',
-          class: 'health'
-        }
-      ],
+      calendarEvents: [],
       // schedule
       timePickerFrom: '', // format: HH:mm
       timePickerTo: '', // format: HH:mm
@@ -206,7 +196,7 @@ export default {
       }
 
       scheduleService
-        .getSchedules(this.monthYear)
+        .getSchedules(this.monthYear, this.selectedUserId)
         .then(({ data }) => (this.events = data))
         .catch(error => console.log({ error }));
     },
@@ -228,6 +218,15 @@ export default {
       this.showScheduleDialog(dateObj);
 
       this.syncPicker(dateObj);
+    },
+    onViewChange({ startDate, endDate }) {
+      const dateFrom = moment.utc(startDate).format('YYYY-MM-DD');
+      const dateTo = moment.utc(endDate).format('YYYY-MM-DD');
+
+      scheduleService
+        .getDetailSchedules(dateFrom, dateTo, this.selectedUserId)
+        .then(({ data }) => (this.calendarEvents = data))
+        .catch(error => this.processErrorResponse(error.response));
     },
     submitSchedule() {
       this.$refs.form.validate();
