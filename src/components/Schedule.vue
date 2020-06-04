@@ -26,11 +26,13 @@
 
           <v-date-picker
             class="d-flex justify-end"
+            ref="picker"
             color="primary"
             v-model="datePicker"
             no-title
             :events="events"
             @change="selectPickerDate"
+            :picker-date.sync="monthYear"
           ></v-date-picker>
           <div class="mt-2 d-flex justify-end">
             <v-btn tile depressed small dark @click="resetDates" color="#1976d2">Today</v-btn>
@@ -150,18 +152,20 @@ import defaultAvatarColours from '../shared/avatar-default-colours';
 import GoogleMap from './GoogleMap';
 import moment from 'moment';
 import rulesMixins from '../mixins/rules.mixins';
+import responseHandlerMixins from '../mixins/response-handler.mixins';
 import 'vue-cal/dist/vuecal.css';
 
 export default {
   components: { VueCal, VueTimepicker, GoogleMap },
   name: 'Schedule',
-  mixins: [rulesMixins],
+  mixins: [rulesMixins, responseHandlerMixins],
   data() {
     return {
       isFormValid: true,
       // date picker
-      datePicker: new Date().toISOString().substr(0, 10),
-      events: ['2020-05-15'],
+      datePicker: new Date().toISOString().substr(0, 10), // format: "2020-06-03"
+      monthYear: null, // on month change
+      events: [],
       // calendar picker
       calenderPicker: new Date(),
       calendarEvents: [
@@ -177,8 +181,8 @@ export default {
         }
       ],
       // schedule
-      timePickerFrom: '',
-      timePickerTo: '',
+      timePickerFrom: '', // format: HH:mm
+      timePickerTo: '', // format: HH:mm
       selectedPlaceLat: null,
       selectedPlaceLng: null,
       scheduleComments: '',
@@ -194,6 +198,16 @@ export default {
       userService
         .getUserById(this.selectedUserId)
         .then(response => (this.selectedUser = response.data))
+        .catch(error => console.log({ error }));
+    },
+    getSchedules() {
+      if (!this.monthYear) {
+        return;
+      }
+
+      scheduleService
+        .getSchedules(this.monthYear)
+        .then(({ data }) => (this.events = data))
         .catch(error => console.log({ error }));
     },
     getRandomAvatarColour() {
@@ -235,7 +249,7 @@ export default {
       scheduleService
         .saveSchedule(body)
         .then(response => console.log({ response }))
-        .catch(error => console.log({ error }));
+        .catch(error => this.processErrorResponse(error.response));
     },
     showScheduleDialog(dateObj) {
       const scheduleTimeFrom = new Date(dateObj.getTime());
@@ -276,8 +290,14 @@ export default {
       return this.selectedUser ? capitalCase(`${this.selectedUser.first_name[0]} ${this.selectedUser.surname[0]}`) : '';
     }
   },
+  watch: {
+    monthYear() {
+      this.getSchedules();
+    }
+  },
   created() {
     this.getUser();
+    this.getSchedules();
   },
   mounted() {
     this.$refs.calendar ? this.$refs.calendar.scrollToTime('08:00') : null;

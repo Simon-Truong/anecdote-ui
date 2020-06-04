@@ -6,11 +6,19 @@ export default class ScheduleService extends BaseService {
     super(apiClient);
   }
 
-  saveSchedule(body) {
-    this._apiClient.post(`/protected/schedule`, body, {
+  getAuthHeaders() {
+    return {
       headers: {
         Authorization: `Bearer ${store.getters.accessToken}`
       }
-    });
+    };
+  }
+
+  getSchedules(monthYear) {
+    return this._apiClient.get(`/protected/schedule?d=${monthYear}`, this.getAuthHeaders());
+  }
+
+  saveSchedule(body) {
+    return this._apiClient.post(`/protected/schedule`, body, this.getAuthHeaders());
   }
 }
