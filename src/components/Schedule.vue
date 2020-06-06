@@ -127,7 +127,8 @@
                 </v-col>
               </v-row>
 
-              <v-row class="d-flex justify-end">
+              <v-row>
+                <v-col cols="12">
                 <v-btn
                   tile
                   depressed
@@ -135,8 +136,12 @@
                   dark
                   color="#1976d2"
                   @click="submitSchedule"
-                  :disabled="!isFormValid || !selectedPlaceLat || !selectedPlaceLng"
+                  :disabled="isButtonDisabled"
                 >Schedule</v-btn>
+                <span v-if="showSpinner" class="ml-2">
+                  <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                </span>
+                </v-col>
               </v-row>
             </v-form>
           </v-container>
@@ -182,6 +187,7 @@ export default {
       showDialog: false,
       comments: '',
       //
+      showSpinner: false,
       selectedUserId: this.$route.params.id,
       selectedUser: null
     };
@@ -238,6 +244,8 @@ export default {
         return;
       }
 
+      this.showSpinner = true;
+
       const body = {
         userId: this.$store.getters.user.id,
         selectedUserId: this.selectedUserId,
@@ -250,11 +258,15 @@ export default {
 
       scheduleService
         .saveSchedule(body)
-        .then(() => {
+        .then(({ data }) => {
+          this.processSuccessResponse(data);
+
+          this.showDialog = false;
           this.getSchedules();
           this.getDetailSchedules();
         })
-        .catch(error => this.processErrorResponse(error.response));
+        .catch(error => this.processErrorResponse(error.response))
+        .finally(() => (this.showSpinner = false));
     },
     showScheduleDialog(dateObj) {
       const scheduleTimeFrom = new Date(dateObj.getTime());
@@ -293,6 +305,9 @@ export default {
     },
     initials() {
       return this.selectedUser ? capitalCase(`${this.selectedUser.first_name[0]} ${this.selectedUser.surname[0]}`) : '';
+    },
+    isButtonDisabled() {
+      return !this.isFormValid || !this.selectedPlaceLat || !this.selectedPlaceLng;
     }
   },
   watch: {
