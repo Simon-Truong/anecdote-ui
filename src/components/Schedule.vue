@@ -31,7 +31,7 @@
             v-model="datePicker"
             no-title
             :events="events"
-            @change="selectPickerDate"
+            @change="selectCalendarPickerDate"
             :picker-date.sync="monthYear"
           ></v-date-picker>
           <div class="mt-2 d-flex justify-end">
@@ -46,14 +46,16 @@
             style="height: 100%;"
             hide-view-selector
             active-view="week"
+            :startWeekOnSunday="true"
             :time-from="8 * 60"
             :time-to="22 * 60"
             :disable-views="['years', 'year', 'month', 'day']"
             :events="calendarEvents"
             :cell-click-hold="false"
             :selected-date="calenderPicker"
+            @ready="getDetailSchedules($event)"
             @cell-click="onCellClick($event)"
-            @view-change="onViewChange($event)"
+            @view-change="getDetailSchedules($event)"
           ></VueCal>
         </v-col>
       </v-row>
@@ -204,22 +206,22 @@ export default {
       const randomIndex = Math.floor(Math.random() * 10);
       return defaultAvatarColours[randomIndex];
     },
-    selectPickerDate(date) {
+    selectCalendarPickerDate(date) {
       this.calenderPicker = new Date(date.split('-'));
     },
     onCellClick(dateObj) {
       if (Object.prototype.hasOwnProperty.call(dateObj, 'date')) {
         dateObj = dateObj.date;
 
-        this.syncPicker(dateObj);
+        this.syncDatePicker(dateObj);
         return;
       }
 
       this.showScheduleDialog(dateObj);
 
-      this.syncPicker(dateObj);
+      this.syncDatePicker(dateObj);
     },
-    onViewChange({ startDate, endDate }) {
+    getDetailSchedules({ startDate, endDate }) {
       const dateFrom = moment.utc(startDate).format('YYYY-MM-DD');
       const dateTo = moment.utc(endDate).format('YYYY-MM-DD');
 
@@ -258,7 +260,7 @@ export default {
 
       this.showDialog = true;
     },
-    syncPicker(dateObj) {
+    syncDatePicker(dateObj) {
       const tempDateObj = new Date(dateObj.getTime());
 
       tempDateObj.setHours(10);
@@ -283,7 +285,7 @@ export default {
       return this.selectedUser ? capitalCase(`${this.selectedUser.first_name} ${this.selectedUser.surname}`) : '';
     },
     tags() {
-      return this.selectedUser ? this.selectedUser.tags.join(', ') : '';
+      return this.selectedUser ? this.selectedUser.tags.map(tag => capitalCase(tag)).join(', ') : '';
     },
     initials() {
       return this.selectedUser ? capitalCase(`${this.selectedUser.first_name[0]} ${this.selectedUser.surname[0]}`) : '';
