@@ -53,9 +53,9 @@
             :events="calendarEvents"
             :cell-click-hold="false"
             :selected-date="calenderPicker"
-            @ready="getDetailSchedules($event)"
+            @ready="calendarRange = $event"
             @cell-click="onCellClick($event)"
-            @view-change="getDetailSchedules($event)"
+            @view-change="calendarRange = $event"
           ></VueCal>
         </v-col>
       </v-row>
@@ -172,6 +172,7 @@ export default {
       // calendar picker
       calenderPicker: new Date(),
       calendarEvents: [],
+      calendarRange: null,
       // schedule
       timePickerFrom: '', // format: HH:mm
       timePickerTo: '', // format: HH:mm
@@ -221,9 +222,9 @@ export default {
 
       this.syncDatePicker(dateObj);
     },
-    getDetailSchedules({ startDate, endDate }) {
-      const dateFrom = moment.utc(startDate).format('YYYY-MM-DD');
-      const dateTo = moment.utc(endDate).format('YYYY-MM-DD');
+    getDetailSchedules() {
+      const dateFrom = moment.utc(this.calendarRange.startDate).format('YYYY-MM-DD');
+      const dateTo = moment.utc(this.calendarRange.endDate).format('YYYY-MM-DD');
 
       scheduleService
         .getDetailSchedules(dateFrom, dateTo, this.selectedUserId)
@@ -249,7 +250,10 @@ export default {
 
       scheduleService
         .saveSchedule(body)
-        .then(response => console.log({ response }))
+        .then(() => {
+          this.getSchedules();
+          this.getDetailSchedules();
+        })
         .catch(error => this.processErrorResponse(error.response));
     },
     showScheduleDialog(dateObj) {
@@ -294,6 +298,9 @@ export default {
   watch: {
     monthYear() {
       this.getSchedules();
+    },
+    calendarRange() {
+      this.getDetailSchedules();
     }
   },
   created() {
