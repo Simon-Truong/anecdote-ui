@@ -46,6 +46,7 @@
             style="height: 100%;"
             hide-view-selector
             active-view="week"
+            time-cell-height="50"
             :startWeekOnSunday="true"
             :time-from="8 * 60"
             :time-to="22 * 60"
@@ -234,7 +235,15 @@ export default {
 
       scheduleService
         .getDetailSchedules(dateFrom, dateTo, this.selectedUserId)
-        .then(({ data }) => (this.calendarEvents = data))
+        .then(
+          ({ data }) =>
+            (this.calendarEvents = data.map(date => {
+              date.title = 'Scheduled';
+              date.class = 'schedule';
+
+              return date;
+            }))
+        )
         .catch(error => this.processErrorResponse(error.response));
     },
     submitSchedule() {
@@ -401,5 +410,11 @@ export default {
 
 ::v-deep .vue__time-picker input.display-time {
   border: none;
+}
+
+::v-deep .vuecal__event.schedule {
+  background-color: rgba(255, 102, 102, 0.9);
+  border: 1px solid rgb(235, 82, 82);
+  color: #fff;
 }
 </style>
