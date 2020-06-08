@@ -69,10 +69,6 @@ export default {
           link: '/profile'
         },
         {
-          label: 'about',
-          link: '/about'
-        },
-        {
           label: 'logout',
           link: '/logout'
         }

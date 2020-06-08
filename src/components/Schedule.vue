@@ -31,7 +31,7 @@
             v-model="datePicker"
             no-title
             :events="events"
-            @change="selectCalendarPickerDate"
+            @change="syncCalendarPicker"
             :picker-date.sync="monthYear"
           ></v-date-picker>
           <div class="mt-2 d-flex justify-end">
@@ -52,10 +52,10 @@
             :disable-views="['years', 'year', 'month', 'day']"
             :events="calendarEvents"
             :cell-click-hold="false"
-            :selected-date="calenderPicker"
-            @ready="calendarRange = $event"
+            :selected-date="calendarPicker"
+            @ready="setCalendarRange($event)"
             @cell-click="onCellClick($event)"
-            @view-change="calendarRange = $event"
+            @view-change="setCalendarRange($event)"
           ></VueCal>
         </v-col>
       </v-row>
@@ -129,18 +129,18 @@
 
               <v-row>
                 <v-col cols="12">
-                <v-btn
-                  tile
-                  depressed
-                  small
-                  dark
-                  color="#1976d2"
-                  @click="submitSchedule"
-                  :disabled="isButtonDisabled"
-                >Schedule</v-btn>
-                <span v-if="showSpinner" class="ml-2">
-                  <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
-                </span>
+                  <v-btn
+                    tile
+                    depressed
+                    small
+                    dark
+                    color="#1976d2"
+                    @click="submitSchedule"
+                    :disabled="isButtonDisabled"
+                  >Schedule</v-btn>
+                  <span v-if="showSpinner" class="ml-2">
+                    <v-progress-circular color="#757575" indeterminate size="20"></v-progress-circular>
+                  </span>
                 </v-col>
               </v-row>
             </v-form>
@@ -175,7 +175,7 @@ export default {
       monthYear: null, // on month change
       events: [],
       // calendar picker
-      calenderPicker: new Date(),
+      calendarPicker: new Date(),
       calendarEvents: [],
       calendarRange: null,
       // schedule
@@ -213,9 +213,6 @@ export default {
       const randomIndex = Math.floor(Math.random() * 10);
       return defaultAvatarColours[randomIndex];
     },
-    selectCalendarPickerDate(date) {
-      this.calenderPicker = new Date(date.split('-'));
-    },
     onCellClick(dateObj) {
       if (Object.prototype.hasOwnProperty.call(dateObj, 'date')) {
         dateObj = dateObj.date;
@@ -227,6 +224,9 @@ export default {
       this.showScheduleDialog(dateObj);
 
       this.syncDatePicker(dateObj);
+    },
+    setCalendarRange(calendarRange) {
+      this.calendarRange = calendarRange;
     },
     getDetailSchedules() {
       const dateFrom = moment.utc(this.calendarRange.startDate).format('YYYY-MM-DD');
@@ -282,14 +282,20 @@ export default {
       tempDateObj.setHours(10);
 
       this.datePicker = tempDateObj.toISOString().substr(0, 10);
+      this.monthYear = this.datePicker.substr(0, 7);
+    },
+    syncCalendarPicker(date) {
+      this.calendarPicker = new Date(date.split('-'));
     },
     resetDates() {
-      this.calenderPicker = new Date();
+      this.calendarPicker = new Date();
 
       const tempPicker = new Date();
 
       tempPicker.setHours(10);
       this.datePicker = tempPicker.toISOString().substr(0, 10);
+
+      this.monthYear = this.datePicker.substr(0, 7);
     },
     onPlaceSelect({ lat, lng }) {
       this.selectedPlaceLat = lat;
